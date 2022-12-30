@@ -1,0 +1,32 @@
+services:
+
+  web-api:
+    restart: always
+    build:
+      context: src/server
+      dockerfile: Services/WebAPI/Dockerfile
+    container_name: web-api
+
+  consumer:
+    restart: always
+    build:
+      context: src/server
+      dockerfile: Services/Consumer/Dockerfile
+    container_name: consumer
+  
+  migrator:
+    restart: on-failure
+    build:
+      context: src/server
+      dockerfile: Migrator/Dockerfile
+    container_name: migrator
+    
+  db:
+    restart: always
+    image: postgres:13.3
+    container_name: db
+  
+  broker:
+    restart: always
+    image: rabbitmq:3.10.6-management-alpine
+    container_name: broker
