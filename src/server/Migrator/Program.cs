@@ -27,4 +27,7 @@ using var scope = serviceProvider.CreateScope();
 
 var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();
 
-runner.MigrateUp();
+if (runner.HasMigrationsToApplyUp())
+{
+    runner.MigrateUp();    
+}

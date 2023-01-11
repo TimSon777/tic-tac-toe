@@ -1,4 +1,4 @@
-using Consumer;
+using MassTransit;
 
 await Host
     .CreateDefaultBuilder(args)
@@ -6,7 +6,7 @@ await Host
     {
         var configuration = ctx.Configuration;
 
-        services.AddHostedService<Worker>();
+        services.AddEvents(configurator => configurator.UsingRabbitMq(configuration));
         services.AddDbContext(configuration);
     })
     .Build()
