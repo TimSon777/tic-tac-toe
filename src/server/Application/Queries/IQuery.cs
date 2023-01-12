@@ -1,4 +1,4 @@
-﻿namespace Application;
+﻿namespace Application.Queries;
 
 public interface IQuery<TResult>
 { }

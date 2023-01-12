@@ -1,6 +1,10 @@
-﻿using MassTransit;
+﻿using Application.Abstractions;
+using Application.Commands;
+using Application.Events;
+using Application.Queries;
+using MassTransit;
 
-namespace Application;
+namespace Application.Implementations;
 
 public sealed class ApplicationMediator : IApplicationMediator
 {

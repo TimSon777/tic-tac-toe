@@ -1,6 +1,6 @@
 using MassTransit;
 using MinimalApi.Endpoint.Extensions;
-using IEventBus = Application.IEventBus;
+using IEventBus = Application.Events.IEventBus;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 
-namespace Application;
+namespace Application.Commands;
 
 public interface ICommandBus : IBus
 { }

@@ -1,4 +1,5 @@
-﻿using Application;
+﻿using Application.Abstractions;
+using Application.Implementations;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection;

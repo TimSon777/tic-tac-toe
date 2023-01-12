@@ -1,4 +1,5 @@
-﻿using Application.Events.Test;
+﻿using Application.Abstractions;
+using Application.Events.Test;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Commands.Test;

@@ -1,4 +1,5 @@
 ﻿using Application;
+using Application.Abstractions;
 using Application.Commands.Test;
 using Application.Queries.Test;
 using MinimalApi.Endpoint;

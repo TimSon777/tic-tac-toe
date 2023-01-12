@@ -1,4 +1,8 @@
-﻿namespace Application;
+﻿using Application.Commands;
+using Application.Events;
+using Application.Queries;
+
+namespace Application.Abstractions;
 
 public interface IApplicationMediator
 {
