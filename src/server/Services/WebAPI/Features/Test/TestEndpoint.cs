@@ -1,5 +1,6 @@
 ﻿using Application;
 using Application.Commands.Test;
+using Application.Queries.Test;
 using MinimalApi.Endpoint;
 
 namespace WebAPI.Features.Test;
@@ -15,10 +16,18 @@ public sealed class TestEndpoint : IEndpoint<IResult, TestRequest>
 
     public async Task<IResult> HandleAsync([AsParameters] TestRequest request)
     {
-        var testCommand = request.Map();
-        var result = await _applicationMediator.Command<TestCommand, TestCommandResult>(testCommand);
-        var response = result.Map();
+        var testCommand = request.MapToCommand();
+        var testQuery = request.MapToQuery();
+        
+        var commandResult = await _applicationMediator.Command<TestCommand, TestCommandResult>(testCommand);
+        var queryResult = await _applicationMediator.Query<TestQuery, TestQueryResult>(testQuery);
 
+        var response = new TestResponse
+        {
+            NumberCommand = commandResult.Number,
+            NumberQuery = queryResult.Number
+        };
+        
         return Results.Ok(response);
     }
 

@@ -1,10 +1,9 @@
-﻿using Domain.Events;
-using MassTransit;
+﻿using Application.Events.Test;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Commands.Test;
 
-public sealed class TestCommandHandler : IConsumer<TestCommand>
+public sealed class TestCommandHandler : CommandHandlerBase<TestCommand, TestCommandResult>
 {
     private readonly ILogger<TestCommandHandler> _logger;
     private readonly IApplicationMediator _applicationMediator;
@@ -15,23 +14,24 @@ public sealed class TestCommandHandler : IConsumer<TestCommand>
         _applicationMediator = applicationMediator;
     }
 
-    public async Task Consume(ConsumeContext<TestCommand> context)
+    protected override async Task<TestCommandResult> Handle(TestCommand command)
     {
-        var number = context.Message.Number + Random.Shared.Next(100);
+        var number = command.Number + Random.Shared.Next(1, 100);
         
         var result = new TestCommandResult
         {
-            Number = context.Message.Number + Random.Shared.Next(100)
+            Number = number
         };
 
         var @event = new TestEvent
         {
             Number = number
         };
-
-        await context.RespondAsync(result);
+        
         await _applicationMediator.Event(@event);
 
-        _logger.LogInformation("New Number: {Number}", number);
+        _logger.LogInformation("Command Number: {Number}", number);
+
+        return result;
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Application.Events;
 
-public abstract class Event<TEvent> : IConsumer<TEvent>
-    where TEvent : class
+public abstract class EventHandlerBase<TEvent> : IConsumer<TEvent>
+    where TEvent : class, IEvent
 {
     protected abstract Task Handle(TEvent @event);
     

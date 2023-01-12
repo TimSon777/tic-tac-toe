@@ -2,8 +2,8 @@
 
 namespace Application.Commands;
 
-public abstract class Command<TCommand, TResult> : IConsumer<TCommand>
-    where TCommand : class, IRequest<TResult>
+public abstract class CommandHandlerBase<TCommand, TResult> : IConsumer<TCommand>
+    where TCommand : class, ICommand<TResult>
 {
     protected abstract Task<TResult> Handle(TCommand command);
     

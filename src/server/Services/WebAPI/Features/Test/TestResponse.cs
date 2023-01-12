@@ -2,5 +2,6 @@
 
 public sealed class TestResponse
 {
-    public required int Number { get; set; }
+    public required int NumberCommand { get; set; }
+    public required int NumberQuery { get; set; }
 }

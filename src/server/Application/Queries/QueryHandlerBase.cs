@@ -2,8 +2,8 @@
 
 namespace Application.Queries;
 
-public abstract class Query<TQuery, TResult> : IConsumer<TQuery>
-    where TQuery : class, IRequest<TResult>
+public abstract class QueryHandlerBase<TQuery, TResult> : IConsumer<TQuery>
+    where TQuery : class, IQuery<TResult>
 {
     protected abstract Task<TResult> Handle(TQuery command);
     
