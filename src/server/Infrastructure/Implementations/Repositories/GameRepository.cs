@@ -21,7 +21,31 @@ public sealed class GameRepository : IGameRepository
             .Where(IsCurrent)
             .CountAsync();
     }
-    
+
+    public async Task UpdateGameAsync(Game game, Player matePlayer)
+    {
+        game.Mate = matePlayer;
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<Game?> FindActiveGameByInitiatorUserNameAsync(string userName)
+    {
+        return await _context.Games.FirstOrDefaultAsync(g => g.Initiator.User.UserName == userName);
+    }
+
+    public async Task<Game> CreateGameAsync(string userName)
+    {
+        var user = await _context.Players.FirstAsync(u => u.User.UserName == userName);
+
+        var game = new Game
+        {
+            Initiator = user
+        };
+
+        await _context.SaveChangesAsync();
+        return game;
+    }
+
     public async Task<IEnumerable<Game>> GetCurrentGamesAsync(int itemsCount, int pageNumber)
     {
         return await _context.Games

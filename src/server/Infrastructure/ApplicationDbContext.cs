@@ -8,6 +8,7 @@ namespace Infrastructure;
 public sealed class ApplicationDbContext : IdentityUserContext<UserIdentity, int>
 {
     public DbSet<Game> Games => Set<Game>();
+    public DbSet<Player> Players => Set<Player>();
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)

@@ -8,7 +8,7 @@ public sealed class Game : BaseEntity<int>
 {
     public Player Initiator { get; set; } = default!;
     public Player? Mate { get; set; }
-    public Board Board { get; set; } = default!;
+    public Board Board { get; set; } = Board.Empty;
     public GameStatus Status { get; set; } = GameStatus.NotStarted;
-    public DateTime CreatedDateTimeUtc { get; set; }
+    public DateTime CreatedDateTimeUtc { get; set; } = DateTime.UtcNow;
 }
