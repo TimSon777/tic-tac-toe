@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 
-const GamePage = () => {
+export const GamePage = () => {
     return (
         <div>
             
@@ -8,4 +8,3 @@ const GamePage = () => {
     );
 };
 
-export default GamePage;

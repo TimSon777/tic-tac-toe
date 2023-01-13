@@ -73,5 +73,3 @@ export const RegistrationPage = () => {
     </form>
     );
 };
-
-//username, pass и повторить пароль

@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 
-const RatingCreationPage = () => {
+export const RatingCreationPage = () => {
     return (
         <div>
             
@@ -8,4 +8,3 @@ const RatingCreationPage = () => {
     );
 };
 
-export default RatingCreationPage;
