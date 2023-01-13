@@ -9,10 +9,6 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.ToTable("Users");
-        
-        builder
-            .Property(u => u.UserName)
-            .HasColumnName("UserName")
-            .HasMaxLength(256);
+        builder.Property(u => u.UserName).HasColumnName("UserName");
     }
 }
