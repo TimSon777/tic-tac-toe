@@ -6,7 +6,7 @@ import {AuthorizationPage} from "./pages/AuthorizationPage";
 import {SelectionPage} from "./pages/SelectionPage";
 import {GamePage} from "./pages/GamePage";
 import {RatingCreationPage} from "./pages/RatingCreationPage";
-import {HubConnection, HubConnectionBuilder} from "@aspnet/signalr";
+import {HttpTransportType, HubConnection, HubConnectionBuilder} from "@aspnet/signalr";
 
 
 const App = () => {
@@ -21,12 +21,13 @@ const App = () => {
     }, [])
 
     const configureConnection = () => {
+        const token = localStorage.getItem("access_token");
         const connection = new HubConnectionBuilder()
             .withUrl(process.env.REACT_APP_ORIGIN_WEB_API + '/gaming', {
-                accessTokenFactory: () => localStorage.getItem("access_token") ?? ''
+                accessTokenFactory: () => token ?? ''
             })
             .build();
-        
+   
         return connection;
     }
     

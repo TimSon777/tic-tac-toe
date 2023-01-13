@@ -32,8 +32,12 @@ export const AuthorizationPage = () => {
         }
         try {
             const response = await axios.post(process.env.REACT_APP_ORIGIN_WEB_API + '/signin', authorizationState);
-            
-            if (response.status === 200) {
+            if (response.status === 200 ) {
+                if (!response.data.succeeded) {
+                    alert(response.data.errors);
+                    return;
+                }
+                console.log(response.data.accessToken);
                 localStorage.setItem("access_token", response.data.accessToken);
                 setIsAuthorized(true);
             } else {

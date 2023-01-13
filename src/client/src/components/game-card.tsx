@@ -19,12 +19,12 @@ export const GameCard = ({game, userName}: GameCardProps) => {
             <p>Id: {game.id}</p>
             <p>Creator: {game.userName}</p>
             <p>Creation date: {game.createdDateTimeUtc}</p>
-            {game.isAvailableToJoin && userName !== game.userName && 
-                <Button variant={"outlined"} color={"primary"}>
-                    Enter
-                </Button>
-            }
             
+            <Button disabled={!(game.isAvailableToJoin && userName !== game.userName)} variant={"outlined"}
+                    color={"primary"}>
+                Enter
+            </Button>
+
         </div>
     );
 };

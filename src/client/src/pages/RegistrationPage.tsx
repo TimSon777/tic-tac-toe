@@ -39,7 +39,10 @@ export const RegistrationPage = () => {
                 console.log( 'Response status: ' + response.status);
                 
                 if (response.status === 200) {
-                    console.log('success')
+                    if (!response.data.succeeded) {
+                        alert(response.data.errors);
+                        return;
+                    }
                 } else {
                     console.log('fail');
                     alert('Server error');

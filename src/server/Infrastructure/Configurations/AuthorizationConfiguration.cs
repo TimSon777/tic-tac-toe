@@ -36,7 +36,7 @@ public static class AuthorizationConfiguration
                         var accessToken = context.HttpContext.Request.Query["access_token"];
 
                         if (!string.IsNullOrWhiteSpace(accessToken) &&
-                            context.HttpContext.Request.Path.StartsWithSegments("/forum"))
+                            context.HttpContext.Request.Path.StartsWithSegments("/gaming"))
                         {
                             context.Token = accessToken;
                         }
