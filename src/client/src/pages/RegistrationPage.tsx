@@ -1,13 +1,12 @@
 ﻿import React, {useState} from 'react';
-import {Button, FormControlLabel, FormGroup, Input, InputLabel} from "@mui/material";
-import {Margin} from "@mui/icons-material";
-
+import {Button, FormGroup, Input, InputLabel} from "@mui/material";
 
 interface RegistrationState {
     username: string;
     password: string;
     confirmPassword: string;
 }
+
 
 export const RegistrationPage = () => {
 

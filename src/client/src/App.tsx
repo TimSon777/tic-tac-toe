@@ -7,7 +7,7 @@ import {GamePage} from "./pages/GamePage";
 import {RatingCreationPage} from "./pages/RatingCreationPage";
 
 const App = () => {
-  return <AuthorizationPage></AuthorizationPage>
+  return <SelectionPage></SelectionPage>
 }
 
 export default App;

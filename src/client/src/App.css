@@ -121,3 +121,7 @@
   flex-direction: column;
   gap: 1rem;
 }
+
+.loader {
+  text-align: center;
+}
