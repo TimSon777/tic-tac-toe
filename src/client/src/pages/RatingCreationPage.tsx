@@ -1,17 +1,36 @@
-﻿import React, {useState} from 'react';
+﻿import React, {useEffect, useState} from 'react';
 import {Button} from "@mui/material";
 import swal from 'sweetalert2'
-import { useForm } from "react-hook-form";
+import jwt_decode from "jwt-decode";
+import {useNavigate} from "react-router-dom";
 
 interface User {
-    username: string;
-    userRating: string;
+    userName: string;
 }
 
-export const RatingCreationPage = ({username, userRating}: User) => {
+export interface Claims {
+    "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier": string;
+}
+
+export const RatingCreationPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [rating, setRating] = useState('');
+    const [userName, setUserName] = useState('');
+    const navigate = useNavigate();
 
+    useEffect(() => {
+            let jwtToken = localStorage.getItem("access_token") as string;
+            console.log("jwtToken: " + jwtToken);
+            if (jwtToken) {
+                let decode = jwt_decode(jwtToken) as Claims;
+                let username = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+                setUserName(username);
+            }
+            else {
+                navigate(`/authorization`, {replace: true});
+            }
+    }, [])
+    
     const handleOpenModal = () => {
         setShowModal(true);
     };
@@ -30,18 +49,19 @@ export const RatingCreationPage = ({username, userRating}: User) => {
             alert("required");
             return;
         }
-// Make an API call to create a new rating with the value specified in the input field
         setShowModal(false);
         setRating('');
     };
     
     const handleRating = () => {
         swal.fire(
-            username,
-            rating,
+            userName,
+            'rating',
             'info'
         );
     }
+
+    
     
     return (
         <>

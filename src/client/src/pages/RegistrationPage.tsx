@@ -1,17 +1,17 @@
 ﻿import React, {useState} from 'react';
 import {Button, FormGroup, Input, InputLabel} from "@mui/material";
+import axios from "axios";
 
 interface RegistrationState {
-    username: string;
+    userName: string;
     password: string;
     confirmPassword: string;
 }
 
-
 export const RegistrationPage = () => {
 
     const [formData, setFormData] = useState<RegistrationState>({
-        username: '',
+        userName: '',
         password: '',
         confirmPassword: '',
     });
@@ -21,24 +21,41 @@ export const RegistrationPage = () => {
         setFormData((prevState) => ({ ...prevState, [name]: value }));
     };
 
-    const handleSubmit = (event: React.FormEvent) => {
+    const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         if (formData.password !== formData.confirmPassword) {
             alert("passwords don't match")
-           return;
+            return;
         } else {
-            // submit form data
+            try {
+                const response = await axios.post(process.env.REACT_APP_ORIGIN_FORUM_API + '/signup', {
+                    userName: formData.userName,
+                    password: formData.password
+                });
+                
+                console.log( 'Response status: ' + response.status);
+                
+                if (response.status === 200) {
+                    console.log('success')
+                } else {
+                    console.log('fail');
+                    alert('Server error');
+                }
+                
+            } catch (error) {
+                console.error(error);
+            }
         }
     };
     
     return (
     <form onSubmit={handleSubmit} className={"registration-form"}>
         <FormGroup className={"form-group-inputs"}>
-            <InputLabel htmlFor="username">Username</InputLabel>
+            <InputLabel htmlFor="userName">Username</InputLabel>
             <Input
                 type="text"
-                name="username"
-                value={formData.username}
+                name="userName"
+                value={formData.userName}
                 onChange={handleChange}
                 id="username"
                 required

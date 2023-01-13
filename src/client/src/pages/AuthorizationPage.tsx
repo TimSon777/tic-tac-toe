@@ -1,18 +1,23 @@
 ﻿import React, {useState} from 'react';
 import axios from "axios";
 import {Button, FormGroup, Input, InputLabel} from "@mui/material";
+import {SelectionPage} from "./SelectionPage";
+import jwt_decode from "jwt-decode";
 
 
 interface AuthorizationState {
-    username: string;
+    userName: string;
     password: string;
 }
 
 export const AuthorizationPage = () => {
     const [authorizationState, setAuthorizationState] = useState<AuthorizationState>({
-        username: '',
-        password: '',
+        userName: '',
+        password: ''
     });
+
+    const [isAuthorized, setIsAuthorized] = useState(localStorage.getItem("access_token") !== "" &&
+        localStorage.getItem("access_token") !== null);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -21,19 +26,28 @@ export const AuthorizationPage = () => {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        if (!authorizationState.username || !authorizationState.password) {
+        
+        if (!authorizationState.userName || !authorizationState.password) {
             return;
         }
         try {
-            const response = await axios.post('/api/login', authorizationState);
+            const response = await axios.post(process.env.RREACT_APP_ORIGIN_WEB_API + '/signin', authorizationState);
+            
             if (response.status === 200) {
-                
+                localStorage.setItem("access_token", response.data.accessToken);
+                setIsAuthorized(true);
             } else {
+                alert("server error!")
             }
+            
         } catch (error) {
             console.error(error);
         }
     };
+
+    if (isAuthorized){
+        return(<SelectionPage></SelectionPage>);
+    }
     
     return (
         <form onSubmit={handleSubmit} className={"registration-form"}>
@@ -42,7 +56,7 @@ export const AuthorizationPage = () => {
                 <Input
                     type="text"
                     name="username"
-                    value={authorizationState.username}
+                    value={authorizationState.userName}
                     onChange={handleChange}
                     id="username"
                     required
