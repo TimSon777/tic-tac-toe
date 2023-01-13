@@ -1,6 +1,6 @@
 ﻿import React, {useState} from 'react';
 import axios from "axios";
-import {Button} from "@mui/material";
+import {Button, FormGroup, Input, InputLabel} from "@mui/material";
 
 
 interface AuthorizationState {
@@ -37,30 +37,28 @@ export const AuthorizationPage = () => {
     
     return (
         <form onSubmit={handleSubmit} className={"registration-form"}>
-            <label>
-                Username:
-                <br />
-                <input
+            <FormGroup className={"form-group-inputs"}>
+                <InputLabel htmlFor="username">Username</InputLabel>
+                <Input
                     type="text"
                     name="username"
                     value={authorizationState.username}
                     onChange={handleChange}
+                    id="username"
                     required
                 />
-            </label>
-            <br />
-            <label>
-                Password:
-                <br />
-                <input
+
+                <InputLabel htmlFor="password">Password</InputLabel>
+                <Input
                     type="password"
                     name="password"
                     value={authorizationState.password}
                     onChange={handleChange}
+                    id="password"
                     required
                 />
-            </label>
-            <br />
+            </FormGroup>
+            
             <Button type="submit">Submit</Button>
         </form>
     );

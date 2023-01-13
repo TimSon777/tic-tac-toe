@@ -1,5 +1,6 @@
 ﻿import React, {useState} from 'react';
 import {Button, FormControlLabel, FormGroup, Input, InputLabel} from "@mui/material";
+import {Margin} from "@mui/icons-material";
 
 
 interface RegistrationState {
@@ -33,42 +34,37 @@ export const RegistrationPage = () => {
     
     return (
     <form onSubmit={handleSubmit} className={"registration-form"}>
-        <label>
-            Username:
-            <br />
-            <input
+        <FormGroup className={"form-group-inputs"}>
+            <InputLabel htmlFor="username">Username</InputLabel>
+            <Input
                 type="text"
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
+                id="username"
                 required
             />
-        </label>
-        <br />
-        <label>
-            Password:
-            <br />
-            <input
+
+            <InputLabel htmlFor="password">Password</InputLabel>
+            <Input
                 type="password"
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
+                id="password"
                 required
             />
-        </label>
-        <br />
-        <label>
-            Confirm Password:
-            <br />
-            <input
+
+            <InputLabel htmlFor="confirmPassword">Confirm Password</InputLabel>
+            <Input
                 type="password"
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
+                id="confirmPassword"
                 required
             />
-        </label>
-        <br />
+        </FormGroup>
         
         <Button type="submit">Submit</Button>
     </form>
