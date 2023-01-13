@@ -24,6 +24,7 @@ export const RegistrationPage = () => {
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         if (formData.password !== formData.confirmPassword) {
+            alert("passwords don't match")
            return;
         } else {
             // submit form data
