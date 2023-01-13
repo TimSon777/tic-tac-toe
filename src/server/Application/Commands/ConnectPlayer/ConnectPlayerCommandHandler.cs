@@ -17,6 +17,14 @@ public sealed class ConnectPlayerCommandHandler : CommandHandlerBase<ConnectPlay
 
     protected override async Task<ConnectPlayerCommandResult> Handle(ConnectPlayerCommand command)
     {
+        if (command.UserName == command.InitiatorUserName)
+        {
+            return new ConnectPlayerCommandResult
+            {
+                IsConnect = false
+            };
+        }
+        
         var isActivePlayer = await _userRepository.IsActivePlayerAsync(command.UserName);
 
         if (isActivePlayer)

@@ -1,5 +1,6 @@
 using MassTransit;
 using MinimalApi.Endpoint.Extensions;
+using WebAPI.Features.Gaming;
 using IEventBus = Application.Events.IEventBus;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,20 +21,24 @@ services.AddIdentity();
 services.AddJwt(configuration);
 services.AddAuthorization(configuration);
 services.AddRepositories();
+services.AddStartGameNotificator();
+services.AddSignalR();
 
 var app = builder.Build();
 
-app.UseCors((options) =>
+app.UseCors(options =>
 {
     options.AllowCredentials()
         .WithOrigins("http://localhost:3000")
         .AllowAnyHeader()
         .AllowAnyMethod();
 });
+
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapHub<GamingHub>("gaming");
 app.MapEndpoints();
 
 app.Run();
