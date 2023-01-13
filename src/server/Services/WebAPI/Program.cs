@@ -38,7 +38,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapHub<GamingHub>("gaming");
+app.MapHub<GamingHub>("/gaming");
 app.MapEndpoints();
 
 app.Run();

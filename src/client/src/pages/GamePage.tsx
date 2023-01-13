@@ -13,9 +13,9 @@ interface User {
 }
 
 export const GamePage = () => {
-    const navigate = useNavigate();
-    const [connection, setConnection] = useState<HubConnection>();
+    
     const [userName, setUserName] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         let jwtToken = localStorage.getItem("access_token") as string;
@@ -25,28 +25,9 @@ export const GamePage = () => {
             let username = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
             setUserName(username);
         } else {
-            navigate(`/authorization`, {replace: true});
+            navigate(`/signup`, {replace: true});
         }
     }, [])
-
-    useEffect(() => {
-        const cnct = () => {
-            setConnection(configureConnection());
-        }
-        cnct();
-    }, [])
-
-    const configureConnection = () => {
-        const connection = new HubConnectionBuilder()
-            .withUrl(process.env.RREACT_APP_ORIGIN_WEB_API + '/', {
-                accessTokenFactory: () => localStorage.getItem("access_token") ?? ''
-            })
-            .build();
-
-
-        return connection;
-    }
-
 
 // Победивший игрок должен получить в личный зачёт +3 очка рейтинга, проигравший -1 очко рейтинга.
     let rating: number = 0;
@@ -79,14 +60,3 @@ export const GamePage = () => {
         </>
     );
 };
-
-
-// Создатель комнаты должен просто сидеть и ждать когда кто-то подключится. 
-// Подключившийся должен нажать на кнопку “присоединиться”. 
-// Зашедший в комнату может подключиться только если его рейтинг подходит под настройки комнаты.
-// Для всех остальных, кто находится в этой комнате должны не иметь возможности вмешиваться в игру. 
-// Должны иметь возможность просматривать ход игры и писать в чате.  
-// Победивший игрок должен получить в личный зачёт +3 очка рейтинга, проигравший -1 очко рейтинга.
-// После окончания, должен быть отчёт в чате: Koyash(username) победил (выделить зеленым цветом).  
-// В случае ничью очки не присуждаются.
-// После окончания игра должна создаться автоматически через несколько секунд (кол-во секунд на ваш выбор).

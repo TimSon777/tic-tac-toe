@@ -1,6 +1,7 @@
 ﻿import React, {useState} from 'react';
 import {Button, FormGroup, Input, InputLabel} from "@mui/material";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 interface RegistrationState {
     userName: string;
@@ -16,6 +17,8 @@ export const RegistrationPage = () => {
         confirmPassword: '',
     });
 
+    const navigate = useNavigate();
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setFormData((prevState) => ({ ...prevState, [name]: value }));
@@ -28,7 +31,7 @@ export const RegistrationPage = () => {
             return;
         } else {
             try {
-                const response = await axios.post(process.env.REACT_APP_ORIGIN_FORUM_API + '/signup', {
+                const response = await axios.post(process.env.REACT_APP_ORIGIN_WEB_API + '/signup', {
                     userName: formData.userName,
                     password: formData.password
                 });
@@ -41,6 +44,8 @@ export const RegistrationPage = () => {
                     console.log('fail');
                     alert('Server error');
                 }
+
+                navigate(`/authorization`, {replace: true});
                 
             } catch (error) {
                 console.error(error);

@@ -31,7 +31,7 @@ export const AuthorizationPage = () => {
             return;
         }
         try {
-            const response = await axios.post(process.env.RREACT_APP_ORIGIN_WEB_API + '/signin', authorizationState);
+            const response = await axios.post(process.env.REACT_APP_ORIGIN_WEB_API + '/signin', authorizationState);
             
             if (response.status === 200) {
                 localStorage.setItem("access_token", response.data.accessToken);
@@ -52,10 +52,10 @@ export const AuthorizationPage = () => {
     return (
         <form onSubmit={handleSubmit} className={"registration-form"}>
             <FormGroup className={"form-group-inputs"}>
-                <InputLabel htmlFor="username">Username</InputLabel>
+                <InputLabel htmlFor="userName">Username</InputLabel>
                 <Input
                     type="text"
-                    name="username"
+                    name="userName"
                     value={authorizationState.userName}
                     onChange={handleChange}
                     id="username"

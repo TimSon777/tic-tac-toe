@@ -3,6 +3,8 @@ import {Button} from "@mui/material";
 import swal from 'sweetalert2'
 import jwt_decode from "jwt-decode";
 import {useNavigate} from "react-router-dom";
+import axios from "axios";
+import {HubConnection} from "@aspnet/signalr";
 
 interface User {
     userName: string;
@@ -12,7 +14,15 @@ export interface Claims {
     "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier": string;
 }
 
-export const RatingCreationPage = () => {
+interface Response {
+    isCreated: boolean;
+}
+
+interface RatingCreationPageProps {
+    connection: HubConnection | undefined;
+}
+
+export const RatingCreationPage = ({connection} : RatingCreationPageProps) => {
     const [showModal, setShowModal] = useState(false);
     const [rating, setRating] = useState('');
     const [userName, setUserName] = useState('');
@@ -20,14 +30,13 @@ export const RatingCreationPage = () => {
 
     useEffect(() => {
             let jwtToken = localStorage.getItem("access_token") as string;
-            console.log("jwtToken: " + jwtToken);
             if (jwtToken) {
                 let decode = jwt_decode(jwtToken) as Claims;
                 let username = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
                 setUserName(username);
             }
             else {
-                navigate(`/authorization`, {replace: true});
+                navigate(`/signup`, {replace: true});
             }
     }, [])
     
@@ -44,11 +53,42 @@ export const RatingCreationPage = () => {
         setRating(event.target.value);
     };
 
-    const handleCreateRating = () => {
+    const handleCreateRating = async () => {
         if (!rating) {
             alert("required");
             return;
         }
+
+        try {
+            const token = localStorage.getItem('access_token');
+
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            
+            axios.post<Response>(process.env.REACT_APP_ORIGIN_WEB_API + '/game', {})
+                .then(response => {
+                if (response.data.isCreated) {
+                    try {
+                        console.log(connection);
+                        
+                        connection!.start().then( () => {
+                            connection!.on('IsConnected', (userName) => {
+                                alert("Is connected");
+                            });
+                        });
+                    }
+                    catch (err) {
+                        console.log(err);
+                    }
+                }
+                else {
+                    alert("false");
+                }
+            });
+        } catch (error) {
+            console.error(error);
+        }
+
+
         setShowModal(false);
         setRating('');
     };
@@ -60,8 +100,6 @@ export const RatingCreationPage = () => {
             'info'
         );
     }
-
-    
     
     return (
         <>
