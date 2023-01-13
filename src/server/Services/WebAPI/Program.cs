@@ -17,11 +17,13 @@ services.AddMassTransit<IEventBus>(configurator => configurator.UsingRabbitMq(co
 services.AddApplicationMediator();
 services.AddIdentity();
 services.AddJwt(configuration);
-
+services.AddAuthorization(configuration);
 var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapEndpoints();
 
 app.Run();

@@ -23,6 +23,8 @@ public sealed class Endpoint : IEndpoint<IResult, Request>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapPost("signup", HandleAsync);
+        app
+            .MapPost("signup", HandleAsync)
+            .AllowAnonymous();
     }
 }
