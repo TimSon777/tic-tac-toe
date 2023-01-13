@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configuration = builder.Configuration;
 
+services.AddCors();
 services.AddEndpointsApiExplorer();
 services.AddEndpoints();
 services.AddSwagger();
@@ -22,6 +23,13 @@ services.AddRepositories();
 
 var app = builder.Build();
 
+app.UseCors((options) =>
+{
+    options.AllowCredentials()
+        .WithOrigins("http://localhost:3000")
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+});
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseAuthentication();
