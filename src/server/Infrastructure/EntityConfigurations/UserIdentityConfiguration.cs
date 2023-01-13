@@ -10,7 +10,7 @@ public sealed class UserIdentityConfiguration : IEntityTypeConfiguration<UserIde
     {
         builder.ToTable("Users");
         builder.HasKey(u => u.Id);
+        builder.HasOne<User>().WithOne().HasForeignKey<User>(u => u.Id);
         builder.Property(u => u.UserName).HasColumnName("UserName");
-        builder.HasOne<User>().WithOne().HasForeignKey<UserIdentity>(u => u.Id);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Application.Abstractions;
-using Domain.Entities;
 
 namespace Application.Commands.SignUp;
 
@@ -26,13 +25,8 @@ public sealed class SignUpHandler : CommandHandlerBase<SignUpCommand, SignUpResu
                 }
             };
         }
-
-        user = new User
-        {
-            UserName = command.UserName
-        };
         
-        var result = await _userManager.CreateUserAsync(user, command.Password);
+        var result = await _userManager.CreateUserAsync(command.UserName, command.Password);
         return result.Map();
     }
 }

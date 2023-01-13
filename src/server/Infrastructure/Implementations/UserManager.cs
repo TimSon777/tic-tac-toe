@@ -16,11 +16,11 @@ public sealed class UserManager : IUserManager
         _userManager = userManager;
     }
 
-    public async Task<AccountingResult> CreateUserAsync(IUser user, string password)
+    public async Task<AccountingResult> CreateUserAsync(string userName, string password)
     {
         var userIdentity = new UserIdentity
         {
-            UserName = user.UserName
+            UserName = userName
         };
 
         var result = await _userManager.CreateAsync(userIdentity, password);
