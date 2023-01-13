@@ -9,7 +9,7 @@ var configuration = builder.Configuration;
 
 services.AddEndpointsApiExplorer();
 services.AddEndpoints();
-services.AddSwaggerGen(options => options.CustomSchemaIds(t => t.ToString()));
+services.AddSwagger();
 services.AddDbContext(configuration);
 services.AddCommands(configurator => configurator.UsingInMemory());
 services.AddQueries(configurator => configurator.UsingInMemory());
@@ -18,6 +18,8 @@ services.AddApplicationMediator();
 services.AddIdentity();
 services.AddJwt(configuration);
 services.AddAuthorization(configuration);
+services.AddRepositories();
+
 var app = builder.Build();
 
 app.UseSwagger();

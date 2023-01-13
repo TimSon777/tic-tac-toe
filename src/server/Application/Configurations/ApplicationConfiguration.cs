@@ -1,4 +1,5 @@
-﻿using Application;
+﻿using System.Reflection;
+using Application;
 using Application.Commands;
 using Application.Events;
 using Application.Queries;
@@ -33,7 +34,7 @@ public static class ApplicationConfiguration
         Action<IBusRegistrationConfigurator> configure)
         where TBus : class, IBus
     {
-        var assembly = typeof(AssemblyMarker).Assembly;
+        var assembly = Assembly.GetExecutingAssembly();
         
         var consumers = assembly
             .GetTypes()

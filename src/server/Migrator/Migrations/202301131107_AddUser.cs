@@ -1,6 +1,4 @@
-﻿using FluentMigrator;
-
-namespace Migrator.Migrations;
+﻿namespace Migrator.Migrations;
 
 [TimestampedMigration(2023, 1, 13, 11, 7)]
 public sealed class AddUser : ForwardOnlyMigration

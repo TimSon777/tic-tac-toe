@@ -25,7 +25,8 @@ public static class AuthorizationConfiguration
                     IssuerSigningKey = settings.SymmetricSecurityKey, 
                     ValidateIssuer = false, 
                     ValidateAudience = false, 
-                    ValidateIssuerSigningKey = false
+                    ValidateIssuerSigningKey = false,
+                    RequireExpirationTime = false
                 };
 
                 options.Events = new JwtBearerEvents
