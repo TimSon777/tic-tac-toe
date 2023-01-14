@@ -10,7 +10,7 @@ public sealed class Game : BaseEntity<int>
     public Player? Mate { get; set; }
     public Board Board { get; set; } = Board.Empty;
     public GameStatus Status { get; set; } = GameStatus.NotStarted;
-    public DateTime CreatedDateTimeUtc { get; set; } = DateTime.UtcNow;
+    public DateTimeOffset CreatedDateTimeUtc { get; set; } = DateTimeOffset.UtcNow;
 
     public PlayerSign NextMove => GetNextMove();
     public bool IsMoveLefts => Board.Any(m => m == Enums.Move.Empty);
