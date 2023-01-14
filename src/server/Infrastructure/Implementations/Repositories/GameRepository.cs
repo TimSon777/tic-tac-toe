@@ -35,13 +35,11 @@ public sealed class GameRepository : IGameRepository
                ?? throw new EntityNotFoundException();
     }
 
-    public async Task<Game> CreateGameAsync(string userName)
+    public async Task<Game> CreateGameAsync(Player initiator)
     {
-        var user = await _context.Players.FirstAsync(u => u.User.UserName == userName);
-
         var game = new Game
         {
-            Initiator = user
+            Initiator = initiator
         };
 
         _context.Add(game);

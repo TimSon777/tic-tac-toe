@@ -27,8 +27,8 @@ public sealed class CreateGameCommandHandler : CommandHandlerBase<CreateGameComm
             };
         }
 
-        await _playerRepository.CreatePlayerAsync(command.UserName);
-        await _gameRepository.CreateGameAsync(command.UserName);
+        var initiator = await _playerRepository.CreatePlayerAsync(command.UserName);
+        await _gameRepository.CreateGameAsync(initiator);
 
         return new CreateGameCommandResult
         {
