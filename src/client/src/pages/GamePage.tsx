@@ -114,6 +114,9 @@ export const GamePage = () => {
                     connection!.invoke("StartGame").then();
                 });
         }
+        else {
+            navigate(`/signup`, {replace: true});
+        }
     }
 
     return (
@@ -125,7 +128,8 @@ export const GamePage = () => {
                 }
             </div>
             <div className={"restart-button"}>
-                <Button disabled={localStorage.getItem("initiatorUserName") === null || localStorage.getItem("initiatorUserName") === userName
+                <Button disabled={localStorage.getItem("initiatorUserName") === null 
+                    || localStorage.getItem("initiatorUserName") === userName
                     || game?.gameStatus === "InProgress"}
                         onClick={handleJoin} color={"primary"} variant="outlined" fullWidth={true}>
                     JOIN
