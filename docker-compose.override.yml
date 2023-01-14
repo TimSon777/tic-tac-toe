@@ -1,5 +1,9 @@
 services:
 
+  web-front:
+    ports:
+      - "3000:80"
+
   web-api:
     ports:
       - "8080:80"

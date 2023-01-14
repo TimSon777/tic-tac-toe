@@ -1,4 +1,9 @@
 services:
+  
+  web-front:
+    build:
+      context: src/client
+      dockerfile: Dockerfile
 
   web-api:
     restart: always
