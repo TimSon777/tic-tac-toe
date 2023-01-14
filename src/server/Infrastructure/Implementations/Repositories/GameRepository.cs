@@ -37,7 +37,7 @@ public sealed class GameRepository : IGameRepository
             .Include(g => g.Mate)
             .ThenInclude(m => m!.User)
             .FirstOrDefaultAsync(g => g.Initiator.User.UserName == userName
-                                      || g.Mate!.User.UserName == userName);
+                                      || g.Mate != null && g.Mate.User.UserName == userName);
     }
 
     public async Task<Game> GetActiveGameByUserNameAsync(string userName)
