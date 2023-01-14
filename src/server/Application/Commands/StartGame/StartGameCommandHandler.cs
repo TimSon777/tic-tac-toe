@@ -16,7 +16,7 @@ public sealed class StartGameCommandHandler : CommandHandlerBase<StartGameComman
 
     protected override async Task<StartGameCommandResult> Handle(StartGameCommand command)
     {
-        var game = await _gameRepository.GetGameByUserNameAsync(command.UserName);
+        var game = await _gameRepository.GetActiveGameByUserNameAsync(command.UserName);
         
         game.Start();
 
