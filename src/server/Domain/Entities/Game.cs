@@ -13,7 +13,7 @@ public sealed class Game : BaseEntity<int>
     public DateTime CreatedDateTimeUtc { get; set; } = DateTime.UtcNow;
 
     public PlayerSign NextMove => GetNextMove();
-    public bool IsMoveLefts => Board.Any(m => m == Enums.Move.Nought);
+    public bool IsMoveLefts => Board.Any(m => m == Enums.Move.Empty);
 
     public static bool IsCorrectCoordinates(int x, int y)
     {
