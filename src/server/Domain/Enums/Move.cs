@@ -20,13 +20,13 @@ public static class MoveExtensions
         };
     }
     
-    public static Move FromChar(this char move)
+    public static Move ToMove(string move)
     {
         return move switch
         {
-            'X' => Move.Cross,
-            'O' => Move.Nought,
-            '_' => Move.Empty,
+            "X" => Move.Cross,
+            "O" => Move.Nought,
+            "_" => Move.Empty,
             _ => throw new ArgumentOutOfRangeException(nameof(move), move, null)
         };
     }
