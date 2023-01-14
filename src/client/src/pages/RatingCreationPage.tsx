@@ -18,6 +18,7 @@ interface Response {
     isCreated: boolean;
 }
 
+
 interface RatingCreationPageProps {
     connection: HubConnection | undefined;
 }
@@ -66,7 +67,7 @@ export const RatingCreationPage = ({connection}: RatingCreationPageProps) => {
             axios.post<Response>(process.env.REACT_APP_ORIGIN_WEB_API + '/game', {})
                 .then(response => {
                     if (response.data.isCreated) {
-                        try {
+                      /*  try {
                             connection!.start().then(() => {
                                 connection!.on('IsConnected', (userName) => {
                                     alert(userName);
@@ -74,15 +75,18 @@ export const RatingCreationPage = ({connection}: RatingCreationPageProps) => {
                             });
                         } catch (err) {
                             console.log(err);
-                        }
+                        }*/
+                                navigate('/game', {replace: true});
+                            
                     } else {
                         alert("false");
                     }
                 });
+
+            //navigate(`/game/${}`, {replace: true});
         } catch (error) {
             console.error(error);
         }
-
 
         setShowModal(false);
         setRating('');
