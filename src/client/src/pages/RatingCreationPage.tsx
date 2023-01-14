@@ -5,6 +5,7 @@ import jwt_decode from "jwt-decode";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {HubConnection} from "@aspnet/signalr";
+import {GameCard} from "../components/game-card";
 
 interface User {
     userName: string;
@@ -34,10 +35,12 @@ interface RatingCreationPageProps {
 
 export const RatingCreationPage = ({connection}: RatingCreationPageProps) => {
     const [showModal, setShowModal] = useState(false);
+    const [showRating, setShowRating] = useState(false);
     const [rating, setRating] = useState('');
     const [userRating, setUserRating] = useState(0);
     const [userName, setUserName] = useState('');
     const navigate = useNavigate();
+    const [ratings, setRatings] = useState<UserRating[]>();
 
     useEffect(() => {
         let jwtToken = localStorage.getItem("access_token") as string;
@@ -46,8 +49,15 @@ export const RatingCreationPage = ({connection}: RatingCreationPageProps) => {
             let username = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
             setUserName(username);
             
-            axios.get<UserRatings>(process.env.REACT_APP_ORIGIN_WEB_API + '/rating')
+            axios.get<UserRatings>(process.env.REACT_APP_ORIGIN_WEB_API + `/rating?ItemsNumber=${10}`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    }
+                })
                 .then(response => {
+                    let rats = response.data.userRatings;
+                    setRatings(rats);
                     let userRat = response.data.userRatings.find(rating => rating.userName === userName);
                     if (userRat) {
                         setUserRating(userRat.rating);
@@ -108,6 +118,10 @@ export const RatingCreationPage = ({connection}: RatingCreationPageProps) => {
         );
     }
     
+    const handleRatings = () => {
+        setShowRating(!showRating);
+    }
+    
     const handleLogOut = () => {
       localStorage.removeItem('access_token');
         navigate(`/signup`, {replace: true});
@@ -115,7 +129,7 @@ export const RatingCreationPage = ({connection}: RatingCreationPageProps) => {
 
     return (
         <>
-            <Button onClick={() => navigate('/selection', {replace: true})} color={"secondary"}>
+            <Button onClick={() => navigate('/selection', {replace: true})} color={"secondary"} variant={"outlined"}>
                 To selecion
             </Button>
             <h1 className={"choose-game-header"}>Choose game</h1>
@@ -126,6 +140,9 @@ export const RatingCreationPage = ({connection}: RatingCreationPageProps) => {
                 </Button>
                 <Button onClick={handleRating} variant={"outlined"} color={"info"}>
                     Rating
+                </Button>
+                <Button onClick={handleRatings} variant={"outlined"} color={"info"}>
+                    Ratings
                 </Button>
             </div>
 
@@ -144,6 +161,16 @@ export const RatingCreationPage = ({connection}: RatingCreationPageProps) => {
                 </div>
             </div>
 
+            {ratings && 
+                <div className={showRating ? "rating active" : "rating"}>
+                <div className={showRating ? "rating-content active" : "rating-content"}>
+                    {ratings.map((item) =>
+                        <p>Usser name: {item.userName} : Rating: {item.rating}</p>
+                    )}
+                </div>
+            </div>
+            }
+            
             <Button style={{marginTop: "3rem"}} variant={"outlined"} onClick={handleLogOut} color={"error"}>
                 Log out
             </Button>

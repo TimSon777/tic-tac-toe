@@ -74,7 +74,7 @@ export const SelectionPage = () => {
     return (
         <>
             <h1 className={"select-game-header"}>Select game</h1>
-            <Button onClick={handleClick}>Rating and Creation</Button>
+            <Button onClick={handleClick} variant={"outlined"}>Rating and Creation</Button>
             <div className={"selection-container"}>
                 <InfiniteScroll
                     pageStart={0}

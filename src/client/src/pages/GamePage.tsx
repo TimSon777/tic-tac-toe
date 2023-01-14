@@ -6,6 +6,7 @@ import jwt_decode from "jwt-decode";
 import {Claims} from "./RatingCreationPage";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import swal from "sweetalert2";
 
 interface Game {
     sign: string;
@@ -31,7 +32,11 @@ export const GamePage = ({connection}: GamePageProps) => {
         if (jwtToken) {
 
             connection!.on('IsConnected', (userName, sign) => {
-                alert(userName + " " + sign);
+                swal.fire(
+                    userName,
+                    sign,
+                    'info'
+                );
 
                 axios.get<Game>(process.env.REACT_APP_ORIGIN_WEB_API + '/games',
                     {
@@ -114,4 +119,3 @@ export const GamePage = ({connection}: GamePageProps) => {
         </>
     );
 };
-//показывать алерт когда приходит уведомление signalr о победе
