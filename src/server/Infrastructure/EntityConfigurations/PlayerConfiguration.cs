@@ -10,5 +10,9 @@ public sealed class PlayerConfiguration : IEntityTypeConfiguration<Player>
     {
         builder.ToTable("Players");
         builder.HasOne(p => p.User).WithMany().HasForeignKey(p => p.UserId);
+        
+        builder
+            .Property(p => p.PlayerSign)
+            .HasConversion<string>();
     }
 }
