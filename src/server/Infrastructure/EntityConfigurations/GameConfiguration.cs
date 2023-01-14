@@ -47,7 +47,7 @@ public sealed class BoardConverter : ValueConverter<Board, string>
         {
             for (var y = 0; y < Board.Size; y++)
             {
-                board[x, y] = MoveExtensions.ToMove(moves[y + x * Board.Size].ToString());
+                board[y, x] = MoveExtensions.ToMove(moves[y + x * Board.Size].ToString());
             }
         }
 
