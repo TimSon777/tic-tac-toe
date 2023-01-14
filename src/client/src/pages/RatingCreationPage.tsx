@@ -102,14 +102,6 @@ export const RatingCreationPage = () => {
         setShowModal(false);
         setRating('');
     };
-
-    const handleRating = () => {
-        swal.fire(
-            userName,
-            userRating.toString(),
-            'info'
-        );
-    }
     
     const handleRatings = () => {
         setShowRating(!showRating);
@@ -130,9 +122,6 @@ export const RatingCreationPage = () => {
 
                 <Button variant={"outlined"} color={"secondary"} onClick={handleOpenModal}>
                     Create game
-                </Button>
-                <Button onClick={handleRating} variant={"outlined"} color={"info"}>
-                    Rating
                 </Button>
                 <Button onClick={handleRatings} variant={"outlined"} color={"info"}>
                     Ratings
