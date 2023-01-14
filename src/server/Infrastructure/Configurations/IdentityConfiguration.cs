@@ -18,7 +18,7 @@ public static class IdentityConfiguration
                 {
                     RequireDigit = false,
                     RequireLowercase = false,
-                    RequiredLength = 3,
+                    RequiredLength = 1,
                     RequireUppercase = false,
                     RequireNonAlphanumeric = false
                 };

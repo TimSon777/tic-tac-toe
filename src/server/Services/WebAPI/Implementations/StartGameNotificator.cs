@@ -13,16 +13,10 @@ public sealed class StartGameNotificator : IStartGameNotificator
         _hub = hub;
     }
 
-    public async Task NotifyAsync(
-        bool isConnect,
-        string initiatorUserName,
-        string userName)
+    public async Task NotifyAsync(string initiatorUserName, string userName)
     {
-        if (isConnect)
-        {
-            await _hub.Clients
-                .User(initiatorUserName)
-                .IsConnected(userName);
-        }
+        await _hub.Clients
+            .User(initiatorUserName)
+            .IsConnected(userName);
     }
 }

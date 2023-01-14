@@ -2,6 +2,7 @@
 
 public interface IGamingClient
 {
-    Task IsConnected(bool result);
     Task IsConnected(string userName);
+    Task UserMoved(bool isSuccess, string? error, string gameStatus);
+    Task MateMoved(int x, int y, string gameStatus);
 }

@@ -1,4 +1,5 @@
-﻿using Application.Abstractions.Repositories;
+﻿using Application.Abstractions;
+using Application.Abstractions.Repositories;
 
 namespace Application.Commands.ConnectPlayer;
 
@@ -7,12 +8,14 @@ public sealed class ConnectPlayerCommandHandler : CommandHandlerBase<ConnectPlay
     private readonly IUserRepository _userRepository;
     private readonly IGameRepository _gameRepository;
     private readonly IPlayerRepository _playerRepository;
+    private readonly IStartGameNotificator _startGameNotificator;
 
-    public ConnectPlayerCommandHandler(IUserRepository userRepository, IGameRepository gameRepository, IPlayerRepository playerRepository)
+    public ConnectPlayerCommandHandler(IUserRepository userRepository, IGameRepository gameRepository, IPlayerRepository playerRepository, IStartGameNotificator startGameNotificator)
     {
         _userRepository = userRepository;
         _gameRepository = gameRepository;
         _playerRepository = playerRepository;
+        _startGameNotificator = startGameNotificator;
     }
 
     protected override async Task<ConnectPlayerCommandResult> Handle(ConnectPlayerCommand command)
@@ -48,6 +51,8 @@ public sealed class ConnectPlayerCommandHandler : CommandHandlerBase<ConnectPlay
         var player = await _playerRepository.CreatePlayerAsync(command.UserName);
 
         await _gameRepository.UpdateGameAsync(game, player);
+
+        await _startGameNotificator.NotifyAsync(command.InitiatorUserName, command.UserName);
         
         return new ConnectPlayerCommandResult
         {

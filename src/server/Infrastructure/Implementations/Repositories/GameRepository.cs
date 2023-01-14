@@ -46,6 +46,22 @@ public sealed class GameRepository : IGameRepository
         return game;
     }
 
+    public async Task<Game?> FindGameByUserNameAsync(string userName)
+    {
+        return await _context.Games
+            .Include(g => g.Initiator)
+            .ThenInclude(i => i.User)
+            .Include(g => g.Mate)
+            .ThenInclude(m => m!.User)
+            .FirstOrDefaultAsync(g => g.Status == GameStatus.InProgress
+                             &&(g.Mate!.User.UserName == userName || g.Initiator.User.UserName == userName));
+    }
+
+    public async Task CommitAsync()
+    {
+        await _context.SaveChangesAsync();
+    }
+
     public async Task<IEnumerable<Game>> GetCurrentGamesAsync(int itemsCount, int pageNumber)
     {
         return await _context.Games
@@ -58,6 +74,12 @@ public sealed class GameRepository : IGameRepository
             .ToListAsync();
     }
 
+    public async Task<Game> GetGameByIdAsync(int gameId)
+    {
+        return await _context.Games
+            .FirstAsync(g => g.Id == gameId);
+    }
+    
     private static readonly Expression<Func<Game, bool>> IsCurrent = game =>
         game.Status == GameStatus.NotStarted
         || game.Status == GameStatus.InProgress;
