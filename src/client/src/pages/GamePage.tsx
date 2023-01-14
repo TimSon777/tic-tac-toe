@@ -12,7 +12,11 @@ interface User {
     username: string;
 }
 
-export const GamePage = () => {
+interface GamePageProps {
+    connection: HubConnection | undefined;
+}
+
+export const GamePage = ({connection}: GamePageProps) => {
     
     const [userName, setUserName] = useState('');
     const navigate = useNavigate();
@@ -38,7 +42,7 @@ export const GamePage = () => {
 
     const handleJoin = () => {
         if (user.rating >= rating) {
-
+            
         } else {
             return;
         }
@@ -46,6 +50,7 @@ export const GamePage = () => {
 
     return (
         <>
+           
             <p>Rating: {rating.toString()}</p>
             <div className={"tic-tac-toe-container"}>
                 <Board squaresInRow={3}></Board>
@@ -57,6 +62,11 @@ export const GamePage = () => {
             </div>
 
             <Alert severity="success">User {user.username} win!</Alert>
+
+            <Button variant={"outlined"} fullWidth={true} color={"secondary"} onClick={() => {navigate(`/selection`, {replace: true});}}>
+                To selection
+            </Button>
+
         </>
     );
 };

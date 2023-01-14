@@ -57,40 +57,44 @@ export const RegistrationPage = () => {
     };
     
     return (
-    <form onSubmit={handleSubmit} className={"registration-form"}>
-        <FormGroup className={"form-group-inputs"}>
-            <InputLabel htmlFor="userName">Username</InputLabel>
-            <Input
-                type="text"
-                name="userName"
-                value={formData.userName}
-                onChange={handleChange}
-                id="username"
-                required
-            />
+        <>
+            <form onSubmit={handleSubmit} className={"registration-form"}>
+                <FormGroup className={"form-group-inputs"}>
+                    <InputLabel htmlFor="userName">Username</InputLabel>
+                    <Input
+                        type="text"
+                        name="userName"
+                        value={formData.userName}
+                        onChange={handleChange}
+                        id="username"
+                        required
+                    />
 
-            <InputLabel htmlFor="password">Password</InputLabel>
-            <Input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                id="password"
-                required
-            />
+                    <InputLabel htmlFor="password">Password</InputLabel>
+                    <Input
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        id="password"
+                        required
+                    />
 
-            <InputLabel htmlFor="confirmPassword">Confirm Password</InputLabel>
-            <Input
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                id="confirmPassword"
-                required
-            />
-        </FormGroup>
-        
-        <Button type="submit">Submit</Button>
-    </form>
+                    <InputLabel htmlFor="confirmPassword">Confirm Password</InputLabel>
+                    <Input
+                        type="password"
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        id="confirmPassword"
+                        required
+                    />
+                </FormGroup>
+
+                <Button type="submit">Submit</Button>
+            </form>
+
+            <Button onClick={() => {navigate(`/authorization`, {replace: true})}}>Sign In</Button>
+        </>
     );
 };

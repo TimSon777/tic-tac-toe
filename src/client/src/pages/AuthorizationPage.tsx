@@ -2,7 +2,7 @@
 import axios from "axios";
 import {Button, FormGroup, Input, InputLabel} from "@mui/material";
 import {SelectionPage} from "./SelectionPage";
-import jwt_decode from "jwt-decode";
+import {useNavigate} from "react-router-dom";
 
 
 interface AuthorizationState {
@@ -16,6 +16,8 @@ export const AuthorizationPage = () => {
         password: ''
     });
 
+    const navigate = useNavigate();
+    
     const [isAuthorized, setIsAuthorized] = useState(localStorage.getItem("access_token") !== "" &&
         localStorage.getItem("access_token") !== null);
 
@@ -54,30 +56,34 @@ export const AuthorizationPage = () => {
     }
     
     return (
-        <form onSubmit={handleSubmit} className={"registration-form"}>
-            <FormGroup className={"form-group-inputs"}>
-                <InputLabel htmlFor="userName">Username</InputLabel>
-                <Input
-                    type="text"
-                    name="userName"
-                    value={authorizationState.userName}
-                    onChange={handleChange}
-                    id="username"
-                    required
-                />
+        <>
+            <form onSubmit={handleSubmit} className={"registration-form"}>
+                <FormGroup className={"form-group-inputs"}>
+                    <InputLabel htmlFor="userName">Username</InputLabel>
+                    <Input
+                        type="text"
+                        name="userName"
+                        value={authorizationState.userName}
+                        onChange={handleChange}
+                        id="username"
+                        required
+                    />
 
-                <InputLabel htmlFor="password">Password</InputLabel>
-                <Input
-                    type="password"
-                    name="password"
-                    value={authorizationState.password}
-                    onChange={handleChange}
-                    id="password"
-                    required
-                />
-            </FormGroup>
-            
-            <Button type="submit">Submit</Button>
-        </form>
+                    <InputLabel htmlFor="password">Password</InputLabel>
+                    <Input
+                        type="password"
+                        name="password"
+                        value={authorizationState.password}
+                        onChange={handleChange}
+                        id="password"
+                        required
+                    />
+                </FormGroup>
+
+                <Button type="submit">Submit</Button>
+            </form>
+
+            <Button onClick={() => {navigate(`/signup`, {replace: true})}}>Sign Up</Button>
+        </>
     );
 };

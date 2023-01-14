@@ -22,28 +22,27 @@ interface RatingCreationPageProps {
     connection: HubConnection | undefined;
 }
 
-export const RatingCreationPage = ({connection} : RatingCreationPageProps) => {
+export const RatingCreationPage = ({connection}: RatingCreationPageProps) => {
     const [showModal, setShowModal] = useState(false);
     const [rating, setRating] = useState('');
     const [userName, setUserName] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
-            let jwtToken = localStorage.getItem("access_token") as string;
-            if (jwtToken) {
-                let decode = jwt_decode(jwtToken) as Claims;
-                let username = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-                setUserName(username);
-            }
-            else {
-                navigate(`/signup`, {replace: true});
-            }
+        let jwtToken = localStorage.getItem("access_token") as string;
+        if (jwtToken) {
+            let decode = jwt_decode(jwtToken) as Claims;
+            let username = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+            setUserName(username);
+        } else {
+            navigate(`/signup`, {replace: true});
+        }
     }, [])
-    
+
     const handleOpenModal = () => {
         setShowModal(true);
     };
-    
+
     const handleCloseModal = () => {
         setShowModal(false);
         setRating('');
@@ -63,27 +62,23 @@ export const RatingCreationPage = ({connection} : RatingCreationPageProps) => {
             const token = localStorage.getItem('access_token');
 
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-            
+
             axios.post<Response>(process.env.REACT_APP_ORIGIN_WEB_API + '/game', {})
                 .then(response => {
-                if (response.data.isCreated) {
-                    try {
-                        console.log(connection);
-                        
-                        connection!.start().then( () => {
-                            connection!.on('IsConnected', (userName) => {
-                                alert("Is connected");
+                    if (response.data.isCreated) {
+                        try {
+                            connection!.start().then(() => {
+                                connection!.on('IsConnected', (userName) => {
+                                    alert(userName);
+                                });
                             });
-                        });
+                        } catch (err) {
+                            console.log(err);
+                        }
+                    } else {
+                        alert("false");
                     }
-                    catch (err) {
-                        console.log(err);
-                    }
-                }
-                else {
-                    alert("false");
-                }
-            });
+                });
         } catch (error) {
             console.error(error);
         }
@@ -92,7 +87,7 @@ export const RatingCreationPage = ({connection} : RatingCreationPageProps) => {
         setShowModal(false);
         setRating('');
     };
-    
+
     const handleRating = () => {
         swal.fire(
             userName,
@@ -101,8 +96,16 @@ export const RatingCreationPage = ({connection} : RatingCreationPageProps) => {
         );
     }
     
+    const handleLogOut = () => {
+      localStorage.removeItem('access_token');
+        navigate(`/signup`, {replace: true});
+    }
+
     return (
         <>
+            <Button onClick={() => navigate('/selection', {replace: true})} color={"secondary"}>
+                To selecion
+            </Button>
             <h1 className={"choose-game-header"}>Choose game</h1>
             <div className={"rating-creation-container"}>
 
@@ -113,28 +116,23 @@ export const RatingCreationPage = ({connection} : RatingCreationPageProps) => {
                     Rating
                 </Button>
             </div>
-   
-                    <div className={showModal ? "modal active" : "modal"}>
-                        <div className={showModal ? "modal-content active" : "modal-content"}>
-                            <form>
-                                <label>
-                                    Max rating?
-                                    <br />
-                                <input required={true}
-                                       type="number" value={rating} onChange={handleRatingChange}/>
-                                </label>
-                                <Button onClick={handleCreateRating} color={"success"}>Create</Button>
-                                <Button onClick={handleCloseModal} color={"error"}>Close</Button>
-                            </form>
-                        </div>
-                    </div>
+
+            <div className={showModal ? "modal active" : "modal"}>
+                <div className={showModal ? "modal-content active" : "modal-content"}>
+                    <form>
+                        <label>
+                            Max rating?
+                            <br/>
+                            <input required={true}
+                                   type="number" value={rating} onChange={handleRatingChange}/>
+                        </label>
+                        <Button onClick={handleCreateRating} color={"success"}>Create</Button>
+                        <Button onClick={handleCloseModal} color={"error"}>Close</Button>
+                    </form>
+                </div>
+            </div>
+
+            <Button onClick={handleLogOut} color={"error"}>Log out</Button>
         </>
     );
 };
-
-//На странице “выбора игр” должно быть 2 кнопки: рейтинг и создание игр. 
-// При нажатии на “рейтинг” должно показываться окно с рейтингом.
-// Должен показываться список: username, рейтинг. 
-// Возможность закрыть окно. (Можно не окно, а ваш вариант)
-// При нажатии на “создание игры” должно показываться окно с обязательным полем для ввода
-// “Макс. кол-во рейтинга?” и кнопка “Создать”.

@@ -29,7 +29,7 @@ export const SelectionPage = () => {
                 setItems(value.data.games);
             });
     }
-    
+
 
     const [items, setItems] = useState<Game[]>([]);
     const [hasMore, setHasMore] = useState(false);
@@ -37,7 +37,7 @@ export const SelectionPage = () => {
     const [userName, setUserName] = useState('');
     const navigate = useNavigate();
 
-    
+
     useEffect(() => {
         const fetchItems = async () => {
             try {
@@ -55,26 +55,32 @@ export const SelectionPage = () => {
                 console.error(error);
             }
         };
-        
-            let jwtToken = localStorage.getItem("access_token") as string;
-            console.log("jwtToken: " + jwtToken);
-            if (jwtToken) {
-                let decode = jwt_decode(jwtToken) as Claims;
-                let username = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-                setUserName(username);
-            } else {
-                navigate(`/signup`, {replace: true});
-            }
 
-        
+        let jwtToken = localStorage.getItem("access_token") as string;
+        console.log("jwtToken: " + jwtToken);
+        if (jwtToken) {
+            let decode = jwt_decode(jwtToken) as Claims;
+            let username = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+            setUserName(username);
+        } else {
+            navigate(`/signup`, {replace: true});
+        }
+
+
         fetchItems();
     }, []);
-    
+
 
     const handleClick = () => {
         navigate(`/`, {replace: true});
     }
-    
+
+    const handleLogOut = () => {
+        localStorage.removeItem('access_token');
+        navigate(`/signup`, {replace: true});
+    }
+
+
     const loader = (
         <div key="loader" className="loader">
             Loading ...
@@ -83,6 +89,7 @@ export const SelectionPage = () => {
 
     return (
         <>
+
             <h1 className={"select-game-header"}>Select game</h1>
             <Button onClick={handleClick}>Rating and Creation</Button>
             <div className={"selection-container"}>
@@ -96,11 +103,11 @@ export const SelectionPage = () => {
                         {items.map((item) =>
                             <GameCard game={item} userName={userName}></GameCard>
                         )}
-                        
+
                     </div>
                 </InfiniteScroll>
-
             </div>
+            <Button onClick={handleLogOut} color={"error"}>Log out</Button>
         </>
     );
 };

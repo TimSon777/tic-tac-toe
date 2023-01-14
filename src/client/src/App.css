@@ -48,7 +48,7 @@
 }
 
 .restart-button:hover {
-  color: aqua;
+  color: darkblue;
 }
 
 .registration-form {
@@ -64,7 +64,7 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  border: 1px solid aqua;
+  border: 1px solid darkblue;
   padding: 1rem;
 }
 

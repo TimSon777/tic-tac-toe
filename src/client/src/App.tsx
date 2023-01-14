@@ -36,7 +36,8 @@ const App = () => {
         { path: '/signup', element: <RegistrationPage /> },
         { path: '/authorization', element: <AuthorizationPage /> },
         { path: "/selection", element: <SelectionPage/>},
-        { path: "/game/:id", element: <GamePage/>},
+        { path: "/game/:id", element: <GamePage connection={connection}/>},
+        { path: "/game", element: <GamePage connection={connection}/>}
 
     ])
     
