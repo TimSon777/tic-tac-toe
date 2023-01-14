@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import {Button} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 
 export interface Game {
     userName: string;
@@ -14,6 +15,13 @@ interface GameCardProps {
 }
 
 export const GameCard = ({game, userName}: GameCardProps) => {
+
+    const navigate = useNavigate();
+    
+    const handleClick = () => {
+        navigate(`/game/${game.id}`, {replace: true});
+    }
+    
     return (
         <div className={"game-card"}>
             <p>Id: {game.id}</p>
@@ -21,7 +29,7 @@ export const GameCard = ({game, userName}: GameCardProps) => {
             <p>Creation date: {game.createdDateTimeUtc}</p>
             
             <Button disabled={!(game.isAvailableToJoin && userName !== game.userName)} variant={"outlined"}
-                    color={"primary"}>
+                    color={"primary"} onClick={handleClick}>
                 Enter
             </Button>
 

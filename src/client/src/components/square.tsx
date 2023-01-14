@@ -5,14 +5,11 @@ import CloseIcon from '@mui/icons-material/Close';
 interface SquareProps {
     value: any;
     onClick: any;
+    isDisabled: boolean;
 }
 
 export const Square = ({value, onClick} : SquareProps) => {
     return (
-        /*      <button className={"square-button"} onClick={onClick}>
-                  {value}
-              </button>*/
-
         <Button
             className={"square-button"}
             onClick={onClick}

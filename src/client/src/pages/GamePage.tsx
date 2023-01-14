@@ -5,12 +5,9 @@ import {HubConnection, HubConnectionBuilder} from "@aspnet/signalr";
 import jwt_decode from "jwt-decode";
 import {Claims} from "./RatingCreationPage";
 import {useNavigate} from "react-router-dom";
+import {Game} from "../components/game-card";
+import axios from "axios";
 
-
-interface User {
-    rating: number;
-    username: string;
-}
 
 interface GamePageProps {
     connection: HubConnection | undefined;
@@ -19,6 +16,7 @@ interface GamePageProps {
 export const GamePage = ({connection}: GamePageProps) => {
     
     const [userName, setUserName] = useState('');
+    const [game, setGame] = useState<Game>();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -31,17 +29,18 @@ export const GamePage = ({connection}: GamePageProps) => {
         } else {
             navigate(`/signup`, {replace: true});
         }
+        
+        axios.post<Game>(process.env.REACT_APP_ORIGIN_WEB_API + '/FOR_GAME', {})
+            .then(response => {
+                setGame(response.data);
+            });
     }, [])
 
 // Победивший игрок должен получить в личный зачёт +3 очка рейтинга, проигравший -1 очко рейтинга.
     let rating: number = 0;
-    let user: User = {
-        rating: 0,
-        username: 'name'
-    };
-
+    
     const handleJoin = () => {
-        if (user.rating >= rating) {
+        if (0) {
             
         } else {
             return;
@@ -50,10 +49,9 @@ export const GamePage = ({connection}: GamePageProps) => {
 
     return (
         <>
-           
             <p>Rating: {rating.toString()}</p>
             <div className={"tic-tac-toe-container"}>
-                <Board squaresInRow={3}></Board>
+                <Board game={game!} squaresInRow={3}></Board>
             </div>
             <div className={"restart-button"}>
                 <Button onClick={handleJoin} color={"inherit"} variant="outlined" fullWidth={true}>
@@ -61,7 +59,7 @@ export const GamePage = ({connection}: GamePageProps) => {
                 </Button>
             </div>
 
-            <Alert severity="success">User {user.username} win!</Alert>
+            <Alert hidden severity="success">User {userName} win!</Alert>
 
             <Button variant={"outlined"} fullWidth={true} color={"secondary"} onClick={() => {navigate(`/selection`, {replace: true});}}>
                 To selection
