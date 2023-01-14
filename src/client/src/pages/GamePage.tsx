@@ -44,14 +44,15 @@ export const GamePage = () => {
     }
     
     useEffect(() => {
-        if (!isReady) {
-            return;
-        }
         
         let jwtToken = localStorage.getItem("access_token") as string;
         console.log(userName + " " + localStorage.getItem("initiatorUserName"));
 
         if (jwtToken) {
+            if (!isReady) {
+                return;
+            }
+            
             console.log("Connection from GamePage: " + connection);
             connection!.on('IsConnected', (userName, sign) => {
                 swal.fire(
