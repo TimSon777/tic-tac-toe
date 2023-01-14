@@ -49,12 +49,9 @@ public sealed class GamingHub : Hub<IGamingClient>
 
         var result = await _applicationMediator.Command<MoveCommand, MoveCommandResult>(command);
 
-        if (result.IsSuccess)
-        {
-            await Clients
-                .User(result.MateUserName)
-                .MateMoved(x, y, result.GameStatus);
-        }
+        await Clients
+            .User(result.MateUserName)
+            .MateMoved(x, y, result.GameStatus, result.Error);
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)

@@ -19,16 +19,7 @@ public sealed class MoveCommandHandler : CommandHandlerBase<MoveCommand, MoveCom
 
     protected override async Task<MoveCommandResult> Handle(MoveCommand command)
     {
-        var game = await _gameRepository.FindActiveGameByUserNameAsync(command.UserName);
-
-        if (game is null)
-        {
-            return new MoveCommandResult
-            {
-                IsSuccess = false,
-                Error = "Game not found."
-            };
-        }
+        var game = await _gameRepository.GetActiveGameByUserNameAsync(command.UserName);
 
         if (!Game.IsCorrectCoordinates(command.X, command.Y))
         {
