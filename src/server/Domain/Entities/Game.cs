@@ -15,7 +15,7 @@ public sealed class Game : BaseEntity<int>
     public PlayerSign NextMove => GetNextMove();
     public bool IsMoveLefts => Board.Any(m => m == Enums.Move.Nought);
 
-    public bool IsCorrectCoordinates(int x, int y)
+    public static bool IsCorrectCoordinates(int x, int y)
     {
         return IsCorrectCoordinate(x) && IsCorrectCoordinate(y);
     }
@@ -152,6 +152,11 @@ public sealed class Game : BaseEntity<int>
         }
     }
 
+    public void Cancel()
+    {
+        Status = GameStatus.Canceled;
+    }
+
     private IEnumerable<Player> Players => new List<Player>
     {
         Initiator,
@@ -190,10 +195,5 @@ public sealed class Game : BaseEntity<int>
         return move == Enums.Move.Cross
             ? GameStatus.CrossWin
             : GameStatus.NoughtWin;
-    }
-
-    public void Cancel()
-    {
-        Status = GameStatus.Canceled;
     }
 }

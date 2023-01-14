@@ -16,7 +16,7 @@ public sealed class GamingHub : Hub<IGamingClient>
         _applicationMediator = applicationMediator;
     }
 
-    public override async Task OnConnectedAsync()
+    public async Task StartGame()
     {
         var userName = Context.User!.UserName();
         
@@ -37,7 +37,7 @@ public sealed class GamingHub : Hub<IGamingClient>
                 .IsConnected(result.InitiatorUserName, result.PlayerSign);
         }
     }
-
+    
     public async Task Move(int x, int y)
     {
         var command = new MoveCommand

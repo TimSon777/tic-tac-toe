@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.Abstractions.Repositories;
 using Application.Events.StopGame;
+using Domain.Entities;
 using Domain.Enums;
 
 namespace Application.Commands.Move;
@@ -30,7 +31,7 @@ public sealed class MoveCommandHandler : CommandHandlerBase<MoveCommand, MoveCom
             };
         }
 
-        if (!game.IsCorrectCoordinates(command.X, command.Y))
+        if (!Game.IsCorrectCoordinates(command.X, command.Y))
         {
             return new MoveCommandResult
             {
