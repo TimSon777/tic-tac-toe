@@ -94,9 +94,9 @@ public sealed class Game : BaseEntity<int>
 
     public string GetMateUserName(string userName)
     {
-        return Mate!.User.UserName == userName
+        return Mate?.User.UserName == userName
             ? Initiator.User.UserName!
-            : Mate.User.UserName!;
+            : Mate?.User.UserName!;
     }
     
     public GameStatus GetCurrentStatus()

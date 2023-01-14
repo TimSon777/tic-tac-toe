@@ -53,6 +53,7 @@ public sealed class GameRepository : IGameRepository
             Initiator = user
         };
 
+        _context.Add(game);
         await _context.SaveChangesAsync();
         return game;
     }
