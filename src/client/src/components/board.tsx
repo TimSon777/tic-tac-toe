@@ -1,5 +1,5 @@
 ﻿import { Button } from '@mui/material';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import CloseIcon from "@mui/icons-material/Close";
 import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
 import {HubConnection} from "@aspnet/signalr";
@@ -8,7 +8,7 @@ import {Game} from "./game-card";
 
 interface BoardProps {
     squaresInRow: number;
-    game: Game;
+    sign: string;
 }
 
 // Создатель комнаты должен просто сидеть и ждать когда кто-то подключится. 
@@ -21,18 +21,24 @@ interface BoardProps {
 // В случае ничью очки не присуждаются.
 // После окончания игра должна создаться автоматически через несколько секунд (кол-во секунд на ваш выбор).
 
-export const Board = ({squaresInRow}: BoardProps) => {
+export const Board = ({squaresInRow, sign}: BoardProps) => {
 
     const squaresCount = squaresInRow * squaresInRow;
     const [squares, setSquares] = useState(Array(squaresCount).fill(null));
-    const [isX, setIsX] = useState(true);
     const [isDisabled, setIsDisabled] = useState(false);
 
+    useEffect(() => {
+        setIsDisabled(sign !== 'X');
+        
+        
+    })
+    
     const handleClick = (i: number) => {
-        squares[i] = isX ? 'X' : 'O';
-        setSquares(squares);
-        setIsX(!isX);
-        setIsDisabled(true);
+        if (squares[i] === '') {
+            squares[i] = sign;
+            setSquares(squares);
+            setIsDisabled(true);
+        }
     }
 //подписка на сигналр, что оппонент сходил, и нужно поменять isDisabled
 // нужно инвокать в сигналр метод хода и нужно поменять isDisabled

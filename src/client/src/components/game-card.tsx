@@ -19,7 +19,7 @@ export const GameCard = ({game, userName}: GameCardProps) => {
     const navigate = useNavigate();
     
     const handleClick = () => {
-        navigate(`/game/${game.id}`, {replace: true});
+        navigate(`/game`, {replace: true});
     }
     
     return (
