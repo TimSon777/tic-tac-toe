@@ -8,6 +8,7 @@ await Host
 
         services.AddEvents(configurator => configurator.UsingRabbitMq(configuration));
         services.AddDbContext(configuration);
+        services.AddRepositories();
     })
     .Build()
     .RunAsync();

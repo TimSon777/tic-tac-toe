@@ -59,7 +59,7 @@ public sealed class MoveCommandHandler : CommandHandlerBase<MoveCommand, MoveCom
         {
             IsSuccess = isOk,
             MateUserName = game.GetMateUserName(command.UserName),
-            GameStatus = game.Status.ToString()
+            GameStatus = game.GetCurrentStatus().ToString()
         };
     }
 }
