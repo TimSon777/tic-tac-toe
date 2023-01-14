@@ -29,17 +29,6 @@ public sealed class GameRepository : IGameRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<Game?> FindActiveGameByUserNameAsync(string userName)
-    {
-        return await _context.Games
-            .Include(g => g.Initiator)
-            .ThenInclude(i => i.User)
-            .Include(g => g.Mate)
-            .ThenInclude(m => m!.User)
-            .FirstOrDefaultAsync(g => g.Initiator.User.UserName == userName
-                                      || g.Mate != null && g.Mate.User.UserName == userName);
-    }
-
     public async Task<Game> GetActiveGameByUserNameAsync(string userName)
     {
         return await FindActiveGameByUserNameAsync(userName)
@@ -60,7 +49,7 @@ public sealed class GameRepository : IGameRepository
         return game;
     }
 
-    public async Task<Game?> FindGameByUserNameAsync(string userName)
+    public async Task<Game?> FindActiveGameByUserNameAsync(string userName)
     {
         return await _context.Games
             .Include(g => g.Initiator)
@@ -68,7 +57,7 @@ public sealed class GameRepository : IGameRepository
             .Include(g => g.Mate)
             .ThenInclude(m => m!.User)
             .FirstOrDefaultAsync(g => g.Status == GameStatus.InProgress
-                             &&(g.Mate!.User.UserName == userName || g.Initiator.User.UserName == userName));
+                             && (g.Mate!.User.UserName == userName || g.Initiator.User.UserName == userName));
     }
 
     public async Task<Game> GetGameWithUsersByIdAsync(int gameId)
