@@ -9,13 +9,13 @@ public enum Move
 
 public static class MoveExtensions
 {
-    public static char ToChar(this Move move)
+    public static string ToStr(this Move move)
     {
         return move switch
         {
-            Move.Cross => 'X',
-            Move.Nought => 'O',
-            Move.Empty => '_',
+            Move.Cross => "X",
+            Move.Nought => "O",
+            Move.Empty => "_",
             _ => throw new ArgumentOutOfRangeException(nameof(move), move, null)
         };
     }

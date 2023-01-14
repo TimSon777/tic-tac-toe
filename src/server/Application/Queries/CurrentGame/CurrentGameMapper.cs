@@ -18,7 +18,7 @@ public static partial class CurrentGameMapper
         return new CurrentGameQueryResult
         {
             Sign = user.PlayerSign,
-            Board = game.Board.Moves.ToJagged(e => e.ToChar()),
+            Board = game.Board.Moves.ToJagged(e => e.ToStr()),
             MateUserName = mate,
             GameStatus = game.Status
         };

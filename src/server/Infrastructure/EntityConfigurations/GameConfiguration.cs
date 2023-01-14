@@ -33,7 +33,7 @@ public sealed class BoardConverter : ValueConverter<Board, string>
     {
         return string.Join("", board.Moves
             .OfType<Move>()
-            .Select(m => m.ToChar()));
+            .Select(m => m.ToStr()));
     }
 
     private static Board ConvertToBoard(string moves)
