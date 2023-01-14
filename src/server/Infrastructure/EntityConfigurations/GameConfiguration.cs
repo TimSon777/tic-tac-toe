@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using System.Text;
+using Domain.Entities;
 using Domain.Enums;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -47,7 +48,7 @@ public sealed class BoardConverter : ValueConverter<Board, string>
         {
             for (var y = 0; y < Board.Size; y++)
             {
-                board[y, x] = MoveExtensions.ToMove(moves[y + x * Board.Size].ToString());
+                board[x, y] = MoveExtensions.ToMove(moves[y + x * Board.Size].ToString());
             }
         }
 
