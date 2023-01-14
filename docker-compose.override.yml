@@ -13,6 +13,7 @@ services:
       BROKER_SETTINGS__USER_NAME: ${BROKER_USER_NAME}
       BROKER_SETTINGS__PASSWORD: ${BROKER_PASSWORD}
       FRONT_ORIGIN: http://localhost:3000
+      JWT_SETTINGS__SECRET_KEY: ${JWT_SECRET_KEY}
 
   consumer:
     environment:
