@@ -6,6 +6,5 @@ public enum GameStatus
     InProgress = 1,
     CrossWin = 2,
     NoughtWin = 3,
-    Draw = 4,
-    Canceled = 5
+    Draw = 4
 }

@@ -152,11 +152,6 @@ public sealed class Game : BaseEntity<int>
         }
     }
 
-    public void Cancel()
-    {
-        Status = GameStatus.Canceled;
-    }
-
     private IEnumerable<Player> Players => new List<Player>
     {
         Initiator,
@@ -174,7 +169,6 @@ public sealed class Game : BaseEntity<int>
             case GameStatus.NotStarted:
             case GameStatus.InProgress:
             case GameStatus.Draw:
-            case GameStatus.Canceled:
             default:
                 throw new InvalidOperationException("No player wins.");
         }

@@ -51,7 +51,9 @@ public sealed class GamingHub : Hub<IGamingClient>
 
         if (result.IsSuccess)
         {
-            await Clients.User(result.MateUserName).MateMoved(x, y, result.GameStatus);
+            await Clients
+                .User(result.MateUserName)
+                .MateMoved(x, y, result.GameStatus);
         }
     }
 
@@ -65,13 +67,8 @@ public sealed class GamingHub : Hub<IGamingClient>
 
         var result = await _applicationMediator.Command<StopGameCommand, StopGameCommandResult>(command);
 
-        if (result.MateUserName is not null)
-        {
-            await Clients.Clients(result.MateUserName).GameOver(false);
-        }
-        else
-        {
-            await Clients.Clients(userName).GameOver(false);
-        }
+        await Clients
+            .Clients(result.MateUserName)
+            .GameOverWhenDisconnect();
     }
 }
