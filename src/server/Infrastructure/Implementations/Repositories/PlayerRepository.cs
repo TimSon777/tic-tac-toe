@@ -36,7 +36,7 @@ public sealed class PlayerRepository : IPlayerRepository
     {
         var game = await _context.Games
             .Include(g => g.Initiator.User)
-            .Where(g => g.Status == GameStatus.InProgress && g.Initiator.User.UserName == userName)
+            .Where(g => g.Status == GameStatus.InProgress && g.Mate!.User.UserName == userName)
             .FirstAsync();
 
         return game.Initiator;
