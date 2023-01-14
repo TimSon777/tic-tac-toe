@@ -29,6 +29,16 @@ public sealed class GameConfiguration : IEntityTypeConfiguration<Game>
             .WithOne()
             .HasForeignKey<Game>("MateId");
         
+        builder
+            .HasOne(game => game.Initiator)
+            .WithOne(p => p.Game)
+            .HasForeignKey<Game>("InitiatorId");
+        
+        builder
+            .HasOne(game => game.Mate)
+            .WithOne(p => p.Game)
+            .HasForeignKey<Game>("MateId");
+        
         builder.ToTable("Games");
     }
 }
