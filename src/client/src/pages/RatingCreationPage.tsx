@@ -10,6 +10,15 @@ interface User {
     userName: string;
 }
 
+interface UserRating {
+    userName: string;
+    rating: number;
+}
+
+interface UserRatings {
+    userRatings: UserRating[];
+}
+
 export interface Claims {
     "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier": string;
 }
@@ -26,6 +35,7 @@ interface RatingCreationPageProps {
 export const RatingCreationPage = ({connection}: RatingCreationPageProps) => {
     const [showModal, setShowModal] = useState(false);
     const [rating, setRating] = useState('');
+    const [userRating, setUserRating] = useState(0);
     const [userName, setUserName] = useState('');
     const navigate = useNavigate();
 
@@ -35,6 +45,14 @@ export const RatingCreationPage = ({connection}: RatingCreationPageProps) => {
             let decode = jwt_decode(jwtToken) as Claims;
             let username = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
             setUserName(username);
+            
+            axios.get<UserRatings>(process.env.REACT_APP_ORIGIN_WEB_API + '/rating')
+                .then(response => {
+                    let userRat = response.data.userRatings.find(rating => rating.userName === userName);
+                    if (userRat) {
+                        setUserRating(userRat.rating);
+                    }
+                });
         } else {
             navigate(`/signup`, {replace: true});
         }
@@ -85,7 +103,7 @@ export const RatingCreationPage = ({connection}: RatingCreationPageProps) => {
     const handleRating = () => {
         swal.fire(
             userName,
-            'rating',
+            userRating.toString(),
             'info'
         );
     }

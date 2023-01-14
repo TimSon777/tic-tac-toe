@@ -16,7 +16,6 @@ interface GameList {
 
 export const SelectionPage = () => {
     const loadMoreData = async (page: number) => {
-        console.log("HI");
         try {
             const response = await axios.get<GameList>(process.env.REACT_APP_ORIGIN_WEB_API
                 + `/games/current?ItemsCount=${3}&PageNumber=${page}`,
@@ -25,25 +24,26 @@ export const SelectionPage = () => {
                         'Authorization': `Bearer ${localStorage.getItem('access_token')}`
                     }
                 })
-            setItems([...items, ...response.data.games]);
+            
+            console.log(response.data.games);
+
+            setItems((items) => [...items, ...response.data.games]);
             setHasMore(response.data.hasMore);
         } catch (error) {
             console.error(error);
         }
-
     }
-
-
+    
     const [items, setItems] = useState<Game[]>([]);
-    const [hasMore, setHasMore] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
 
     const [userName, setUserName] = useState('');
     const navigate = useNavigate();
     
-
-
+    const [isFetching, setIsFetching] = useState(true);
+    
     useEffect(() => {
-        const fetchItems = async () => {
+       /* const fetchItems = async () => {
             try {
                 await axios.get<GameList>(process.env.REACT_APP_ORIGIN_WEB_API
                     + `/games/current?ItemsCount=${3}&PageNumber=${1}`,
@@ -58,7 +58,7 @@ export const SelectionPage = () => {
             } catch (error) {
                 console.error(error);
             }
-        };
+        };*/
 
         let jwtToken = localStorage.getItem("access_token") as string;
         console.log("jwtToken: " + jwtToken);
@@ -70,8 +70,7 @@ export const SelectionPage = () => {
             navigate(`/signup`, {replace: true});
         }
 
-
-        fetchItems();
+      //  fetchItems();
     }, []);
 
 
@@ -97,7 +96,7 @@ export const SelectionPage = () => {
             <Button onClick={handleClick}>Rating and Creation</Button>
             <div className={"selection-container"}>
                 <InfiniteScroll
-                    pageStart={1}
+                    pageStart={0}
                     loadMore={loadMoreData}
                     hasMore={hasMore}
                     loader={loader}
@@ -106,7 +105,6 @@ export const SelectionPage = () => {
                         {items.map((item) =>
                             <GameCard game={item} userName={userName} key={item.id}/>
                         )}
-
                     </div>
                 </InfiniteScroll>
             </div>

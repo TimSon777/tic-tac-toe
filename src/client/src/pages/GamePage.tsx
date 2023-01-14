@@ -62,8 +62,6 @@ export const GamePage = ({connection}: GamePageProps) => {
         
     }, [])
 
-// Победивший игрок должен получить в личный зачёт +3 очка рейтинга, проигравший -1 очко рейтинга.
-    let rating: number = 0;
     
     const handleJoin = () => {
         let jwtToken = localStorage.getItem("access_token") as string;
@@ -93,7 +91,6 @@ export const GamePage = ({connection}: GamePageProps) => {
 
     return (
         <>
-            <p>Rating: {rating.toString()}</p>
             <div className={"tic-tac-toe-container"}>
                 {game == undefined 
                     ? <></>
