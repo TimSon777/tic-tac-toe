@@ -80,7 +80,7 @@ public sealed class Game : BaseEntity<int>
             return MoveResult.WrongSign;
         }
 
-        if (Board[x, y] != Enums.Move.Nought)
+        if (Board[x, y] != Enums.Move.Empty)
         {
             return MoveResult.NotEmpty;
         }
