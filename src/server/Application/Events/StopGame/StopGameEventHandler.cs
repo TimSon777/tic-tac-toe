@@ -13,8 +13,9 @@ public sealed class StopGameEventHandler : EventHandlerBase<StopGameEvent>
 
     protected override async Task Handle(StopGameEvent @event)
     {
-        var game = await _gameRepository.GetGameByIdAsync(@event.GameId);
+        var game = await _gameRepository.GetGameWithUsersByIdAsync(@event.GameId);
         game.Status = @event.GameStatus;
+        game.UpdateRating();
         await _gameRepository.CommitAsync();
     }
 }

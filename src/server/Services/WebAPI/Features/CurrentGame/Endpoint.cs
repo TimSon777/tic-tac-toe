@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using Application.Abstractions;
-using Application.Queries.CurrentGames.CurrentGame;
+using Application.Queries.CurrentGame;
 using MinimalApi.Endpoint;
 
 namespace WebAPI.Features.CurrentGame;

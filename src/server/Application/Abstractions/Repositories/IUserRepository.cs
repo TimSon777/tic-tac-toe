@@ -6,4 +6,5 @@ public interface IUserRepository
 {
     Task<bool> IsActivePlayerAsync(string userName);
     Task<User?> FindByUserNameWithReadyPlayerAsync(string userName);
+    Task<IEnumerable<User>> ListUsersWithHighestRatingAsync(int count);
 }

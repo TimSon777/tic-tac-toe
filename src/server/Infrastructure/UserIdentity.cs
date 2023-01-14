@@ -5,5 +5,5 @@ namespace Infrastructure;
 
 public sealed class UserIdentity : IdentityUser<int>, IUser
 {
-    
+    public int Rating { get; set; }
 }

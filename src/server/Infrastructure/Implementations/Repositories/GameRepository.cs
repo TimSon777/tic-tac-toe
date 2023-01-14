@@ -67,6 +67,14 @@ public sealed class GameRepository : IGameRepository
                              &&(g.Mate!.User.UserName == userName || g.Initiator.User.UserName == userName));
     }
 
+    public async Task<Game> GetGameWithUsersByIdAsync(int gameId)
+    {
+        return await _context.Games
+            .Include(g => g.Initiator.User)
+            .Include(g => g.Mate!.User)
+            .FirstAsync(g => g.Id == gameId);
+    }
+
     public async Task<Game> GetGameByUserNameAsync(string userName)
     {
         return await _context.Games
@@ -92,12 +100,6 @@ public sealed class GameRepository : IGameRepository
             .Take(itemsCount)
             .Include(g => g.Initiator.User)
             .ToListAsync();
-    }
-
-    public async Task<Game> GetGameByIdAsync(int gameId)
-    {
-        return await _context.Games
-            .FirstAsync(g => g.Id == gameId);
     }
     
     private static readonly Expression<Func<Game, bool>> IsCurrent = game =>

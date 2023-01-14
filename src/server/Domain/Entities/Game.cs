@@ -131,6 +131,49 @@ public sealed class Game : BaseEntity<int>
             ? GameStatus.InProgress
             : GameStatus.Draw;
     }
+
+    public void UpdateRating()
+    {
+        switch (Status)
+        {
+            case GameStatus.Draw:
+                return;
+            case GameStatus.CrossWin or GameStatus.NoughtWin:
+            {
+                var winner = GetWinnerPlayer();
+                var loser = Players.First(p => p != winner);
+
+                winner.User.Rating += 3;
+                loser.User.Rating -= 1;
+                break;
+            }
+            default:
+                throw new InvalidOperationException($"Can't update rating when Status is {Status}");
+        }
+    }
+
+    private IEnumerable<Player> Players => new List<Player>
+    {
+        Initiator,
+        Mate!
+    };
+
+    private Player GetWinnerPlayer()
+    {
+        switch (Status)
+        {
+            case GameStatus.CrossWin:
+                return Players.First(p => p.PlayerSign == PlayerSign.Cross);
+            case GameStatus.NoughtWin:
+                return Players.First(p => p.PlayerSign == PlayerSign.Nought);
+            case GameStatus.NotStarted:
+            case GameStatus.InProgress:
+            case GameStatus.Draw:
+            case GameStatus.Canceled:
+            default:
+                throw new InvalidOperationException("No player wins.");
+        }
+    }
     
     private PlayerSign GetNextMove()
     {

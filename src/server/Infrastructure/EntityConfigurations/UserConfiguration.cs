@@ -10,5 +10,6 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.ToTable("Users");
         builder.Property(u => u.UserName).HasColumnName("UserName");
+        builder.Property(u => u.Rating).HasColumnName("Rating");
     }
 }

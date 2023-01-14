@@ -12,5 +12,6 @@ public sealed class UserIdentityConfiguration : IEntityTypeConfiguration<UserIde
         builder.HasKey(u => u.Id);
         builder.HasOne<User>().WithOne().HasForeignKey<User>(u => u.Id);
         builder.Property(u => u.UserName).HasColumnName("UserName");
+        builder.Property(u => u.Rating).HasColumnName("Rating");
     }
 }

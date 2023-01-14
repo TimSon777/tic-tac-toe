@@ -2,7 +2,7 @@
 using Domain.Enums;
 using Riok.Mapperly.Abstractions;
 
-namespace Application.Queries.CurrentGames.CurrentGame;
+namespace Application.Queries.CurrentGame;
 
 [Mapper]
 public static partial class CurrentGameMapper

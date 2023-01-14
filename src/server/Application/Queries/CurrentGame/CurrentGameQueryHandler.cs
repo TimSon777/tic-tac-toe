@@ -1,6 +1,6 @@
 ﻿using Application.Abstractions.Repositories;
 
-namespace Application.Queries.CurrentGames.CurrentGame;
+namespace Application.Queries.CurrentGame;
 
 public sealed class CurrentGameQueryHandler : QueryHandlerBase<CurrentGameQuery, CurrentGameQueryResult>
 {

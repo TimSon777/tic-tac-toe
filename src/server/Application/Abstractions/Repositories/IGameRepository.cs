@@ -11,7 +11,7 @@ public interface IGameRepository
     Task<Game> GetActiveGameByInitiatorUserNameAsync(string userName);
     Task<Game> CreateGameAsync(string userName);
     Task<Game?> FindGameByUserNameAsync(string userName);
-    Task<Game> GetGameByIdAsync(int gameId);
+    Task<Game> GetGameWithUsersByIdAsync(int gameId);
     Task<Game> GetGameByUserNameAsync(string userName);
     Task CommitAsync();
 }

@@ -37,4 +37,19 @@ public sealed class UserRepository : IUserRepository
             UserName = userName
         };
     }
+
+    public async Task<IEnumerable<User>> ListUsersWithHighestRatingAsync(int count)
+    {
+        var users = await _context.Users
+            .OrderByDescending(u => u.Rating)
+            .Take(count)
+            .ToListAsync();
+
+        return users.Select(u => new User
+        {
+            Id = u.Id,
+            Rating = u.Rating,
+            UserName = u.UserName
+        });
+    }
 }

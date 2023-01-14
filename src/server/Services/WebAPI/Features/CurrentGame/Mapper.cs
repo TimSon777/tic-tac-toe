@@ -1,4 +1,4 @@
-﻿using Application.Queries.CurrentGames.CurrentGame;
+﻿using Application.Queries.CurrentGame;
 using Riok.Mapperly.Abstractions;
 
 namespace WebAPI.Features.CurrentGame;

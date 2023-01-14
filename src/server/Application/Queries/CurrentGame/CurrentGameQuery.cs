@@ -1,4 +1,4 @@
-﻿namespace Application.Queries.CurrentGames.CurrentGame;
+﻿namespace Application.Queries.CurrentGame;
 
 public sealed class CurrentGameQuery : IQuery<CurrentGameQueryResult>
 {

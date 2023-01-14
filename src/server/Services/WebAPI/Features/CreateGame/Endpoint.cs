@@ -5,7 +5,7 @@ using MinimalApi.Endpoint;
 
 namespace WebAPI.Features.CreateGame;
 
-public sealed class Endpoint : IEndpoint<IResult, Request>
+public sealed class Endpoint : IEndpoint<IResult>
 {
     private HttpContext HttpContext { get; set; } = default!;
     private readonly IApplicationMediator _applicationMediator;
@@ -15,10 +15,8 @@ public sealed class Endpoint : IEndpoint<IResult, Request>
         _applicationMediator = applicationMediator;
     }
 
-    public async Task<IResult> HandleAsync([AsParameters] Request request)
+    public async Task<IResult> HandleAsync()
     {
-        var userName = HttpContext.User.UserName();
-
         var command = new CreateGameCommand
         {
             UserName = HttpContext.User.UserName()
@@ -33,10 +31,10 @@ public sealed class Endpoint : IEndpoint<IResult, Request>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapPost("game", async (HttpContext httpContext, Request request) =>
+        app.MapPost("game", async (HttpContext httpContext) =>
         {
             HttpContext = httpContext;
-            return await HandleAsync(request);
+            return await HandleAsync();
         });
     }
 }
