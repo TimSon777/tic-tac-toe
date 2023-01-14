@@ -26,6 +26,8 @@ export const GamePage = ({connection}: GamePageProps) => {
 
     useEffect(() => {
         let jwtToken = localStorage.getItem("access_token") as string;
+        console.log(userName + " " + localStorage.getItem("initiatorUserName"));
+
         if (jwtToken) {
 
             connection!.on('IsConnected', (userName, sign) => {
@@ -99,7 +101,7 @@ export const GamePage = ({connection}: GamePageProps) => {
                 }
             </div>
             <div className={"restart-button"}>
-                <Button disabled={userName === localStorage.getItem("initiatorUserName")}
+                <Button disabled={localStorage.getItem("initiatorUserName") === null || localStorage.getItem("initiatorUserName") === userName}
                         onClick={handleJoin} color={"primary"} variant="outlined" fullWidth={true}>
                     JOIN
                 </Button>

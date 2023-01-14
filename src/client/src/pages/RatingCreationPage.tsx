@@ -25,7 +25,7 @@ interface RatingCreationPageProps {
 
 export const RatingCreationPage = ({connection}: RatingCreationPageProps) => {
     const [showModal, setShowModal] = useState(false);
-    const [rating, setRating] = useState('');
+    const [rating, setRating] = useState(0);
     const [userName, setUserName] = useState('');
     const navigate = useNavigate();
 

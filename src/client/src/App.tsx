@@ -14,21 +14,22 @@ const App = () => {
     const [connection, setConnection] = useState<HubConnection>();
     
     useEffect(() => {
-        const cnct = () => {
-            setConnection(configureConnection());
+        const cnct = async () => {
+            setConnection(await configureConnection());
         }
         cnct();
     }, [])
 
-    const configureConnection = () => {
+    const configureConnection = async () => {
         const token = localStorage.getItem("access_token");
         const connection = new HubConnectionBuilder()
             .withUrl(process.env.REACT_APP_ORIGIN_WEB_API + '/gaming', {
                 accessTokenFactory: () => token ?? ''
             })
             .build();
-        connection.start().then()
-        
+
+        await connection.start();
+
         return connection;
     }
     

@@ -14,20 +14,23 @@ interface GameList {
     totalCount: number;
 }
 
-//http://localhost:5087/games/current?ItemsCount=2&PageNumber=1
 export const SelectionPage = () => {
-    const loadMoreData = (page: number) => {
-        axios.get<GameList>(process.env.RREACT_APP_ORIGIN_WEB_API
-            + `/games/current?ItemsCount=${3}&PageNumber=${page}`,
-            {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-                }
-            })
-            .then(value => {
-                setHasMore(value.data.hasMore);
-                setItems(value.data.games);
-            });
+    const loadMoreData = async (page: number) => {
+        console.log("HI");
+        try {
+            const response = await axios.get<GameList>(process.env.REACT_APP_ORIGIN_WEB_API
+                + `/games/current?ItemsCount=${3}&PageNumber=${page}`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                    }
+                })
+            setItems([...items, ...response.data.games]);
+            setHasMore(response.data.hasMore);
+        } catch (error) {
+            console.error(error);
+        }
+
     }
 
 
@@ -36,6 +39,7 @@ export const SelectionPage = () => {
 
     const [userName, setUserName] = useState('');
     const navigate = useNavigate();
+    
 
 
     useEffect(() => {
@@ -100,7 +104,7 @@ export const SelectionPage = () => {
                 >
                     <div className={"selection-container"}>
                         {items.map((item) =>
-                            <GameCard game={item} userName={userName}/>
+                            <GameCard game={item} userName={userName} key={item.id}/>
                         )}
 
                     </div>
