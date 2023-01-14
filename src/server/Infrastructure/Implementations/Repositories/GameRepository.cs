@@ -32,8 +32,10 @@ public sealed class GameRepository : IGameRepository
     public async Task<Game?> FindActiveGameByUserNameAsync(string userName)
     {
         return await _context.Games
-            .Include(g => g.Initiator.User)
-            .Include(g => g.Mate!.User)
+            .Include(g => g.Initiator)
+            .ThenInclude(i => i.User)
+            .Include(g => g.Mate)
+            .ThenInclude(m => m!.User)
             .FirstOrDefaultAsync(g => g.Initiator.User.UserName == userName
                                       || g.Mate!.User.UserName == userName);
     }
