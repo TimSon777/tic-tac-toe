@@ -18,8 +18,15 @@ public sealed class StopGameCommandHandler : CommandHandlerBase<StopGameCommand,
     protected override async Task<StopGameCommandResult> Handle(StopGameCommand command)
     {
         var game = await _gameRepository.GetActiveGameByUserNameAsync(command.UserName);
-        
-        game.Lose(command.UserName); 
+
+        if (game.Mate is null)
+        {
+            game.Cancel();
+        }
+        else
+        {
+            game.Lose(command.UserName); 
+        }
 
         var @event = new StopGameEvent
         {

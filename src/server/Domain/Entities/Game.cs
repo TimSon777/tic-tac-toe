@@ -45,11 +45,6 @@ public sealed class Game : BaseEntity<int>
 
     public void Lose(string userName)
     {
-        if (Mate is null)
-        {
-            return;
-        }
-        
         var playerSign = Mate!.User.UserName == userName
             ? Mate.PlayerSign
             : Initiator.PlayerSign;
@@ -137,11 +132,13 @@ public sealed class Game : BaseEntity<int>
             : GameStatus.Draw;
     }
 
-    public void UpdateRating()
+    public void UpdateRatings()
     {
         switch (Status)
         {
             case GameStatus.Draw:
+                return;
+            case GameStatus.Cancelled:
                 return;
             case GameStatus.CrossWin or GameStatus.NoughtWin:
             {
@@ -150,6 +147,7 @@ public sealed class Game : BaseEntity<int>
 
                 winner.User.Rating += 3;
                 loser.User.Rating -= 1;
+                
                 break;
             }
             default:
@@ -194,5 +192,10 @@ public sealed class Game : BaseEntity<int>
         return move == Enums.Move.Cross
             ? GameStatus.CrossWin
             : GameStatus.NoughtWin;
+    }
+
+    public void Cancel()
+    {
+        Status = GameStatus.Cancelled;
     }
 }

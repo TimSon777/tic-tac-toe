@@ -15,7 +15,7 @@ public sealed class StopGameEventHandler : EventHandlerBase<StopGameEvent>
     {
         var game = await _gameRepository.GetGameWithUsersByIdAsync(@event.GameId);
         game.Status = @event.GameStatus;
-        game.UpdateRating();
-        await _gameRepository.CommitAsync();
+        game.UpdateRatings();
+        await _gameRepository.UpdateAsync(game);
     }
 }
