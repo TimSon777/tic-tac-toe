@@ -42,7 +42,7 @@ public sealed class MoveCommandHandler : CommandHandlerBase<MoveCommand, MoveCom
         
         var result = game.Move(command.X, command.Y, command.UserName);
         
-        await _gameRepository.CommitAsync();
+        await _gameRepository.UpdateAsync(game);
 
         var isOk = result == MoveResult.Ok;
 

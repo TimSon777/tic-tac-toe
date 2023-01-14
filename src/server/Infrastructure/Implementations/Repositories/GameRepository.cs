@@ -66,6 +66,12 @@ public sealed class GameRepository : IGameRepository
             .FirstAsync(g => g.Id == gameId);
     }
 
+    public async Task UpdateAsync(Game game)
+    {
+        _context.Update(game);
+        await _context.SaveChangesAsync();
+    }
+
     public async Task CommitAsync()
     {
         await _context.SaveChangesAsync();
