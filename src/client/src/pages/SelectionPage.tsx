@@ -40,26 +40,8 @@ export const SelectionPage = () => {
     const [userName, setUserName] = useState('');
     const navigate = useNavigate();
     
-    const [isFetching, setIsFetching] = useState(true);
     
     useEffect(() => {
-       /* const fetchItems = async () => {
-            try {
-                await axios.get<GameList>(process.env.REACT_APP_ORIGIN_WEB_API
-                    + `/games/current?ItemsCount=${3}&PageNumber=${1}`,
-                    {
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-                        }
-                    }).then(value => {
-                    setHasMore(value.data.hasMore);
-                    setItems(value.data.games);
-                });
-            } catch (error) {
-                console.error(error);
-            }
-        };*/
-
         let jwtToken = localStorage.getItem("access_token") as string;
         console.log("jwtToken: " + jwtToken);
         if (jwtToken) {
@@ -70,7 +52,6 @@ export const SelectionPage = () => {
             navigate(`/signup`, {replace: true});
         }
 
-      //  fetchItems();
     }, []);
 
 
