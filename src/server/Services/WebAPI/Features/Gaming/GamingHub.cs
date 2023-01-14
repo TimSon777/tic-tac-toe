@@ -2,6 +2,7 @@
 using Application.Abstractions;
 using Application.Commands.Move;
 using Application.Commands.StartGame;
+using Application.Commands.StopGame;
 using Microsoft.AspNetCore.SignalR;
 
 namespace WebAPI.Features.Gaming;
@@ -17,12 +18,21 @@ public sealed class GamingHub : Hub<IGamingClient>
 
     public override async Task OnConnectedAsync()
     {
+        var userName = Context.User!.UserName();
+        
         var command = new StartGameCommand
         {
-            UserName = Context.User!.UserName()
+            UserName = userName
         };
 
-        await _applicationMediator.Command<StartGameCommand, StartGameCommandResult>(command);
+        var result = await _applicationMediator.Command<StartGameCommand, StartGameCommandResult>(command);
+
+        if (result.IsStart)
+        {
+            await Clients
+                .User(result.InitiatorUserName)
+                .IsConnected(userName);
+        }
     }
 
     public async Task Move(int x, int y)
@@ -36,11 +46,29 @@ public sealed class GamingHub : Hub<IGamingClient>
 
         var result = await _applicationMediator.Command<MoveCommand, MoveCommandResult>(command);
 
-        await Clients.Caller.UserMoved(result.IsSuccess, result.Error, result.GameStatus);
-        
         if (result.IsSuccess)
         {
             await Clients.User(result.MateUserName).MateMoved(x, y, result.GameStatus);
+        }
+    }
+
+    public override async Task OnDisconnectedAsync(Exception? exception)
+    {
+        var userName = Context.User!.UserName();
+        var command = new StopGameCommand
+        {
+            UserName = userName
+        };
+
+        var result = await _applicationMediator.Command<StopGameCommand, StopGameCommandResult>(command);
+
+        if (result.MateUserName is not null)
+        {
+            await Clients.Clients(result.MateUserName).GameOver(false);
+        }
+        else
+        {
+            await Clients.Clients(userName).GameOver(false);
         }
     }
 }

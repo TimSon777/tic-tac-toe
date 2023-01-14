@@ -21,18 +21,15 @@ services.AddIdentity();
 services.AddJwt(configuration);
 services.AddAuthorization(configuration);
 services.AddRepositories();
-services.AddStartGameNotificator();
 services.AddSignalR();
 
 var app = builder.Build();
 
-app.UseCors(options =>
-{
-    options.AllowCredentials()
-        .WithOrigins("http://localhost:3000")
-        .AllowAnyHeader()
-        .AllowAnyMethod();
-});
+app.UseCors(options => options
+    .AllowCredentials()
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .WithOrigins(configuration.GetString("FRONT_ORIGIN")));
 
 app.UseSwagger();
 app.UseSwaggerUI();

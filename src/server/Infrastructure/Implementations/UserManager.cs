@@ -36,7 +36,7 @@ public sealed class UserManager : IUserManager
     public async Task<IUser> GetByUserNameAsync(string userName)
     {
         return await _userManager.FindByNameAsync(userName)
-               ?? throw new UserNotFoundException();
+               ?? throw new EntityNotFoundException();
     }
     public async Task<bool> CheckCorrectAsync(string userName, string password)
     {

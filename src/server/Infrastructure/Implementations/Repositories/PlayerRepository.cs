@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Repositories;
 using Domain.Entities;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Implementations.Repositories;
@@ -29,5 +30,15 @@ public sealed class PlayerRepository : IPlayerRepository
         _context.Add(player);
         await _context.SaveChangesAsync();
         return player;
+    }
+
+    public async Task<Player> GetInitiatorAsync(string userName)
+    {
+        var game = await _context.Games
+            .Include(g => g.Initiator.User)
+            .Where(g => g.Status == GameStatus.InProgress && g.Initiator.User.UserName == userName)
+            .FirstAsync();
+
+        return game.Initiator;
     }
 }

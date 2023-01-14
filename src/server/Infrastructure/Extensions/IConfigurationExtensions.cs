@@ -15,4 +15,10 @@ public static class IConfigurationExtensions
             .Get<TSettings>()
             ?? throw new InvalidOperationException($"No settings under {sectionName} section name");
     }
+    
+    public static string GetString(this IConfiguration configuration, string sectionName)
+    {
+        return configuration[sectionName]
+               ?? throw new InvalidOperationException($"No strings under {sectionName} section name");
+    }
 }

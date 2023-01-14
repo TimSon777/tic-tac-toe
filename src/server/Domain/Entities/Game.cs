@@ -42,6 +42,22 @@ public sealed class Game : BaseEntity<int>
     }
 
     public bool IsGameOver => GetCurrentStatus() is GameStatus.Draw or GameStatus.CrossWin or GameStatus.NoughtWin;
+
+    public void Lose(string userName)
+    {
+        var playerSign = Mate!.User.UserName == userName
+            ? Mate.PlayerSign
+            : Initiator.PlayerSign;
+        
+        Lose(playerSign);
+    }
+
+    private void Lose(PlayerSign playerSign)
+    {
+        Status = playerSign == PlayerSign.Cross
+            ? GameStatus.NoughtWin
+            : GameStatus.CrossWin;
+    }
     
     public MoveResult Move(int x, int y, string userName)
     {
@@ -85,28 +101,28 @@ public sealed class Game : BaseEntity<int>
     
     public GameStatus GetCurrentStatus()
     {
-        for(var x = 0; x < 3; x++)
+        for (var x = 0; x < 3; x++)
         {
-            if(Board[x, 0] != Enums.Move.Empty && Board[x, 0] == Board[x, 1] && Board[x, 1] == Board[x, 2])
+            if (Board[x, 0] != Enums.Move.Empty && Board[x, 0] == Board[x, 1] && Board[x, 1] == Board[x, 2])
             {
                 return GetStatus(Board[x, 0]);
             }
         }
 
-        for(var y = 0; y < 3; y++)
+        for (var y = 0; y < 3; y++)
         {
-            if(Board[0, y] != Enums.Move.Empty && Board[0, y] == Board[1, y] && Board[1, y] == Board[2, y])
+            if (Board[0, y] != Enums.Move.Empty && Board[0, y] == Board[1, y] && Board[1, y] == Board[2, y])
             {
                 return GetStatus(Board[0, y]);
             }
         }
 
-        if(Board[0, 0] != Enums.Move.Empty && Board[0, 0] == Board[1, 1] && Board[1, 1] == Board[2, 2])
+        if (Board[0, 0] != Enums.Move.Empty && Board[0, 0] == Board[1, 1] && Board[1, 1] == Board[2, 2])
         {
             return GetStatus(Board[0, 0]);
         }
 
-        if(Board[0, 2] != Enums.Move.Empty && Board[0, 2] == Board[1, 1] && Board[1, 1] == Board[2, 0])
+        if (Board[0, 2] != Enums.Move.Empty && Board[0, 2] == Board[1, 1] && Board[1, 1] == Board[2, 0])
         {
             return GetStatus(Board[0, 2]);
         }
@@ -131,5 +147,10 @@ public sealed class Game : BaseEntity<int>
         return move == Enums.Move.Cross
             ? GameStatus.CrossWin
             : GameStatus.NoughtWin;
+    }
+
+    public void Cancel()
+    {
+        Status = GameStatus.Canceled;
     }
 }

@@ -12,6 +12,7 @@ services:
       BROKER_SETTINGS__HOST: broker
       BROKER_SETTINGS__USER_NAME: ${BROKER_USER_NAME}
       BROKER_SETTINGS__PASSWORD: ${BROKER_PASSWORD}
+      FRONT_ORIGIN: http://localhost:3000
 
   consumer:
     environment:

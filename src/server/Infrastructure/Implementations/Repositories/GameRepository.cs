@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Application.Abstractions.Repositories;
+using Application.Exceptions;
 using Domain.Entities;
 using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +31,16 @@ public sealed class GameRepository : IGameRepository
 
     public async Task<Game?> FindActiveGameByInitiatorUserNameAsync(string userName)
     {
-        return await _context.Games.FirstOrDefaultAsync(g => g.Initiator.User.UserName == userName);
+        return await _context.Games
+            .Include(g => g.Initiator.User)
+            .Include(g => g.Mate!.User)
+            .FirstOrDefaultAsync(g => g.Initiator.User.UserName == userName);
+    }
+
+    public async Task<Game> GetActiveGameByInitiatorUserNameAsync(string userName)
+    {
+        return await FindActiveGameByInitiatorUserNameAsync(userName)
+               ?? throw new EntityNotFoundException();
     }
 
     public async Task<Game> CreateGameAsync(string userName)
