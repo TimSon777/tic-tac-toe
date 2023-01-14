@@ -67,6 +67,16 @@ public sealed class GameRepository : IGameRepository
                              &&(g.Mate!.User.UserName == userName || g.Initiator.User.UserName == userName));
     }
 
+    public async Task<Game> GetGameByUserNameAsync(string userName)
+    {
+        return await _context.Games
+            .Include(g => g.Mate!.User)
+            .Include(g => g.Initiator.User)
+            .FirstAsync(g => (g.Status == GameStatus.InProgress || g.Status == GameStatus.NotStarted)
+                             && (g.Mate!.User.UserName == userName || g.Initiator.User.UserName == userName));
+
+    }
+
     public async Task CommitAsync()
     {
         await _context.SaveChangesAsync();

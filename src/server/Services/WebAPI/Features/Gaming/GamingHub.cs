@@ -31,7 +31,10 @@ public sealed class GamingHub : Hub<IGamingClient>
         {
             await Clients
                 .User(result.InitiatorUserName)
-                .IsConnected(userName);
+                .IsConnected(userName, result.InitiatorPlayerSign);
+
+            await Clients.Caller
+                .IsConnected(result.InitiatorUserName, result.PlayerSign);
         }
     }
 

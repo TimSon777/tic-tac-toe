@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions.Repositories;
+using Domain.Enums;
 
 namespace Application.Commands.StartGame;
 
@@ -19,7 +20,7 @@ public sealed class StartGameCommandHandler : CommandHandlerBase<StartGameComman
     {
         var user = await _userRepository.FindByUserNameWithReadyPlayerAsync(command.UserName);
         
-        if (user is null || !user.IsReadyToStartPlayer())
+        if (user is null)
         {
             return new StartGameCommandResult
             {
@@ -27,7 +28,7 @@ public sealed class StartGameCommandHandler : CommandHandlerBase<StartGameComman
             };
         }
 
-        var game = user.CurrentGame;
+        var game = await _gameRepository.GetGameByUserNameAsync(user.UserName!);
         
         game.Start();
 
@@ -38,7 +39,9 @@ public sealed class StartGameCommandHandler : CommandHandlerBase<StartGameComman
         return new StartGameCommandResult
         {
             IsStart = true,
-            InitiatorUserName = player.User.UserName
+            InitiatorUserName = player.User.UserName,
+            InitiatorPlayerSign = game.Initiator.PlayerSign.ToChar().ToString(),
+            PlayerSign = game.Mate!.PlayerSign.ToChar().ToString()
         };
     }
 }
