@@ -27,7 +27,7 @@ public sealed class MoveCommandHandler : CommandHandlerBase<MoveCommand, MoveCom
             {
                 IsSuccess = false,
                 Error = $"Not correct coordinates X: {command.X} Y: {command.Y}",
-                GameStatus = game.Status.ToString()
+                GameStatus = game.Status
             };
         }
         
@@ -43,7 +43,7 @@ public sealed class MoveCommandHandler : CommandHandlerBase<MoveCommand, MoveCom
             {
                 IsSuccess = isOk,
                 MateUserName = game.GetMateUserName(command.UserName),
-                GameStatus = game.Status.ToString()
+                GameStatus = game.Status
             };
         }
         
@@ -59,7 +59,7 @@ public sealed class MoveCommandHandler : CommandHandlerBase<MoveCommand, MoveCom
         {
             IsSuccess = isOk,
             MateUserName = game.GetMateUserName(command.UserName),
-            GameStatus = game.GetCurrentStatus().ToString()
+            GameStatus = game.GetCurrentStatus()
         };
     }
 }

@@ -3,6 +3,7 @@ using Application.Abstractions;
 using Application.Commands.Move;
 using Application.Commands.StartGame;
 using Application.Commands.StopGame;
+using Domain.Enums;
 using Microsoft.AspNetCore.SignalR;
 
 namespace WebAPI.Features.Gaming;
@@ -49,9 +50,23 @@ public sealed class GamingHub : Hub<IGamingClient>
 
         var result = await _applicationMediator.Command<MoveCommand, MoveCommandResult>(command);
 
+        if (result.GameStatus
+            is GameStatus.Draw
+            or GameStatus.CrossWin
+            or GameStatus.NoughtWin)
+        {
+            var status = result.GameStatus.ToString();
+            await Clients.Caller
+                .GameOver(status);
+
+            await Clients
+                .User(result.MateUserName)
+                .GameOver(status);
+        }
+        
         await Clients
             .User(result.MateUserName)
-            .MateMoved(x, y, result.GameStatus, result.Error);
+            .MateMoved(x, y, result.Error);
     }
 
     public override async Task OnDisconnectedAsync(Exception? exception)

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Domain.Enums;
 
 namespace Application.Commands.Move;
 
@@ -10,5 +11,5 @@ public sealed class MoveCommandResult
     public string? Error { get; set; }
 
     public string MateUserName { get; set; } = default!;
-    public string GameStatus { get; set; } = default!;
+    public GameStatus GameStatus { get; set; } = default!;
 }
