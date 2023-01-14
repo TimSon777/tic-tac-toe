@@ -101,7 +101,7 @@ public sealed class Game : BaseEntity<int>
     
     public GameStatus GetCurrentStatus()
     {
-        for (var x = 0; x < 3; x++)
+        for (var x = 0; x < Board.Size; x++)
         {
             if (Board[x, 0] != Enums.Move.Empty && Board[x, 0] == Board[x, 1] && Board[x, 1] == Board[x, 2])
             {
@@ -109,7 +109,7 @@ public sealed class Game : BaseEntity<int>
             }
         }
 
-        for (var y = 0; y < 3; y++)
+        for (var y = 0; y < Board.Size; y++)
         {
             if (Board[0, y] != Enums.Move.Empty && Board[0, y] == Board[1, y] && Board[1, y] == Board[2, y])
             {
