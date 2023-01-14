@@ -9,7 +9,7 @@ public sealed class AddRating : ForwardOnlyMigration
             .Column("Rating")
             .OnTable("Users")
             .AsInt32()
-            .WithDefaultValue(0)
+            .SetExistingRowsTo(0)
             .NotNullable();
     }
 }

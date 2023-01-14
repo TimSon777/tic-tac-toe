@@ -1,7 +1,6 @@
 ﻿using Application.Abstractions;
 using Application.Abstractions.Repositories;
 using Application.Events.StopGame;
-using Domain.Enums;
 
 namespace Application.Commands.StopGame;
 
@@ -18,7 +17,7 @@ public sealed class StopGameCommandHandler : CommandHandlerBase<StopGameCommand,
 
     protected override async Task<StopGameCommandResult> Handle(StopGameCommand command)
     {
-        var game = await _gameRepository.GetActiveGameByInitiatorUserNameAsync(command.UserName);
+        var game = await _gameRepository.GetActiveGameByUserNameAsync(command.UserName);
 
         if (game.Mate?.User.UserName is null)
         {
@@ -40,9 +39,7 @@ public sealed class StopGameCommandHandler : CommandHandlerBase<StopGameCommand,
         return new StopGameCommandResult
         {
             GameStatus = game.Status.ToString(),
-            MateUserName = game.Initiator.User.UserName == command.UserName
-                ? game.Mate?.User.UserName
-                : game.Initiator.User.UserName
+            MateUserName = game.GetMateUserName(command.UserName)
         };
     }
 }

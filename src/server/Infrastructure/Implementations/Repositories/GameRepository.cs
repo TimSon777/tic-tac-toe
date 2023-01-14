@@ -29,17 +29,18 @@ public sealed class GameRepository : IGameRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<Game?> FindActiveGameByInitiatorUserNameAsync(string userName)
+    public async Task<Game?> FindActiveGameByUserNameAsync(string userName)
     {
         return await _context.Games
             .Include(g => g.Initiator.User)
             .Include(g => g.Mate!.User)
-            .FirstOrDefaultAsync(g => g.Initiator.User.UserName == userName);
+            .FirstOrDefaultAsync(g => g.Initiator.User.UserName == userName
+                                      || g.Mate!.User.UserName == userName);
     }
 
-    public async Task<Game> GetActiveGameByInitiatorUserNameAsync(string userName)
+    public async Task<Game> GetActiveGameByUserNameAsync(string userName)
     {
-        return await FindActiveGameByInitiatorUserNameAsync(userName)
+        return await FindActiveGameByUserNameAsync(userName)
                ?? throw new EntityNotFoundException();
     }
 

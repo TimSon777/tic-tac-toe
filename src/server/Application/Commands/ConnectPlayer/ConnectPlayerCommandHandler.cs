@@ -36,7 +36,7 @@ public sealed class ConnectPlayerCommandHandler : CommandHandlerBase<ConnectPlay
             };
         }
 
-        var game = await _gameRepository.FindActiveGameByInitiatorUserNameAsync(command.InitiatorUserName);
+        var game = await _gameRepository.FindActiveGameByUserNameAsync(command.InitiatorUserName);
 
         if (game is null)
         {

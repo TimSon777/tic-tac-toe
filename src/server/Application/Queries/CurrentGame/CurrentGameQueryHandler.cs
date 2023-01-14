@@ -13,7 +13,7 @@ public sealed class CurrentGameQueryHandler : QueryHandlerBase<CurrentGameQuery,
 
     protected override async Task<CurrentGameQueryResult> Handle(CurrentGameQuery command)
     {
-        var game = await _gameRepository.GetActiveGameByInitiatorUserNameAsync(command.UserName);
+        var game = await _gameRepository.GetActiveGameByUserNameAsync(command.UserName);
 
         return game.Map(command.UserName);
     }
