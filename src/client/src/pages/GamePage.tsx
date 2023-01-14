@@ -108,14 +108,6 @@ export const GamePage = ({connection}: GamePageProps) => {
                     JOIN
                 </Button>
             </div>
-
-            <Button style={{marginTop: "2rem"}} variant={"outlined"} fullWidth={true} color={"secondary"} onClick={() => {navigate(`/selection`, {replace: true});}}>
-                To selection
-            </Button>
-            
-            {/*<Alert */}
-            {/*    // style={{display: "none"}} */}
-            {/*    severity="success">User {userName} win!</Alert>*/}
         </>
     );
 };
