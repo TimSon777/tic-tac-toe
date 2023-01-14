@@ -30,6 +30,7 @@ export const AuthorizationPage = () => {
         event.preventDefault();
         
         if (!authorizationState.userName || !authorizationState.password) {
+            alert("All fields are required");
             return;
         }
         try {
@@ -43,7 +44,7 @@ export const AuthorizationPage = () => {
                 localStorage.setItem("access_token", response.data.accessToken);
                 setIsAuthorized(true);
             } else {
-                alert("server error!")
+                alert("Server error!")
             }
             
         } catch (error) {
@@ -80,10 +81,13 @@ export const AuthorizationPage = () => {
                     />
                 </FormGroup>
 
-                <Button type="submit">Submit</Button>
+                <Button type="submit" fullWidth={true}>Submit</Button>
             </form>
 
-            <Button onClick={() => {navigate(`/signup`, {replace: true})}}>Sign Up</Button>
+            <Button onClick={() => {navigate(`/signup`, {replace: true})}} fullWidth={true} style={{marginTop: "2rem"}}
+            color={"secondary"}>
+                Sign Up
+            </Button>
         </>
     );
 };

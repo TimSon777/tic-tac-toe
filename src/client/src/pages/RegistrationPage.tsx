@@ -27,7 +27,7 @@ export const RegistrationPage = () => {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         if (formData.password !== formData.confirmPassword) {
-            alert("passwords don't match")
+            alert("Passwords don't match")
             return;
         } else {
             try {
@@ -44,7 +44,6 @@ export const RegistrationPage = () => {
                         return;
                     }
                 } else {
-                    console.log('fail');
                     alert('Server error');
                 }
 
@@ -91,10 +90,14 @@ export const RegistrationPage = () => {
                     />
                 </FormGroup>
 
-                <Button type="submit">Submit</Button>
+                <Button type="submit" fullWidth={true} >Submit</Button>
             </form>
 
-            <Button onClick={() => {navigate(`/authorization`, {replace: true})}}>Sign In</Button>
+            <Button onClick={() => {navigate(`/authorization`, {replace: true})}} fullWidth={true} 
+                    style={{marginTop: "2rem"}}
+                    color={"secondary"}>
+                Sign In
+            </Button>
         </>
     );
 };

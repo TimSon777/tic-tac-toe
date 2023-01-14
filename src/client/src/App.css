@@ -5,9 +5,9 @@
 }
 
 #root {
-  width: fit-content;
   padding: 2rem;
   margin: 5rem auto;
+  width: fit-content;
 }
 
 .App {

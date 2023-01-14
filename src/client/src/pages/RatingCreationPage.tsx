@@ -132,7 +132,9 @@ export const RatingCreationPage = ({connection}: RatingCreationPageProps) => {
                 </div>
             </div>
 
-            <Button onClick={handleLogOut} color={"error"}>Log out</Button>
+            <Button style={{marginTop: "3rem"}} variant={"outlined"} onClick={handleLogOut} color={"error"}>
+                Log out
+            </Button>
         </>
     );
 };
