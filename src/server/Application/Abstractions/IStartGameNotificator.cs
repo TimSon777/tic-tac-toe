@@ -2,8 +2,6 @@
 
 public interface IStartGameNotificator
 {
-    Task NotifyAsync(
-        bool isConnect,
-        string initiatorUserName,
+    Task NotifyAsync(string initiatorUserName,
         string userName);
 }

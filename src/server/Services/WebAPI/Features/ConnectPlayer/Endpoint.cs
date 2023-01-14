@@ -8,12 +8,10 @@ namespace WebAPI.Features.ConnectPlayer;
 public sealed class Endpoint : IEndpoint<IResult, Request>
 {
     private HttpContext HttpContext { get; set; } = default!;
-    private readonly IStartGameNotificator _startGameNotificator;
     private readonly IApplicationMediator _applicationMediator;
     
-    public Endpoint(IStartGameNotificator startGameNotificator, IApplicationMediator applicationMediator)
+    public Endpoint(IApplicationMediator applicationMediator)
     {
-        _startGameNotificator = startGameNotificator;
         _applicationMediator = applicationMediator;
     }
     
@@ -27,8 +25,6 @@ public sealed class Endpoint : IEndpoint<IResult, Request>
         };
 
         var result = await _applicationMediator.Command<ConnectPlayerCommand, ConnectPlayerCommandResult>(command);
-
-        await _startGameNotificator.NotifyAsync(result.IsConnect, request.InitiatorUserName, userName);
 
         var response = result.Map();
         return Results.Ok(response);
