@@ -4,7 +4,6 @@ import swal from 'sweetalert2'
 import jwt_decode from "jwt-decode";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import {HubConnection} from "@aspnet/signalr";
 
 interface User {
     userName: string;
@@ -27,12 +26,7 @@ interface Response {
     isCreated: boolean;
 }
 
-
-interface RatingCreationPageProps {
-    connection: HubConnection | undefined;
-}
-
-export const RatingCreationPage = ({connection}: RatingCreationPageProps) => {
+export const RatingCreationPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [showRating, setShowRating] = useState(false);
     const [rating, setRating] = useState('');

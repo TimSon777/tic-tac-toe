@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions.Repositories;
 using Domain.Entities;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Implementations.Repositories;
@@ -16,7 +17,8 @@ public sealed class UserRepository : IUserRepository
     public async Task<bool> IsActivePlayerAsync(string userName)
     {
         return await _context.Games
-            .AnyAsync(p => p.Initiator.User.UserName == userName || p.Mate!.User.UserName == userName);
+            .AnyAsync(g => (g.Status == GameStatus.InProgress || g.Status == GameStatus.NotStarted)
+                           && (g.Initiator.User.UserName == userName || g.Mate!.User.UserName == userName));
     }
 
     public async Task<IEnumerable<User>> ListUsersWithHighestRatingAsync(int count)

@@ -45,6 +45,11 @@ public sealed class Game : BaseEntity<int>
 
     public void Lose(string userName)
     {
+        if (Mate is null)
+        {
+            return;
+        }
+        
         var playerSign = Mate!.User.UserName == userName
             ? Mate.PlayerSign
             : Initiator.PlayerSign;

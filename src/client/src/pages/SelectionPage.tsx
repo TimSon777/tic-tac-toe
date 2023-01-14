@@ -1,5 +1,6 @@
 ﻿import React, {useEffect, useState} from 'react';
 import {Game, GameCard} from "../components/game-card";
+// @ts-ignore
 import InfiniteScroll from 'react-infinite-scroller';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";

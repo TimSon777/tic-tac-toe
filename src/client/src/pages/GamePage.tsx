@@ -15,22 +15,44 @@ interface Game {
     board: string[][];
 }
 
-interface GamePageProps {
-    connection: HubConnection | undefined;
-}
-
-export const GamePage = ({connection}: GamePageProps) => {
+export const GamePage = () => {
     
     const [userName, setUserName] = useState('');
     const [game, setGame] = useState<Game>();
     const navigate = useNavigate();
+    const [isReady, setReady] = useState(false);
+    const [connection, setConnection] = useState<HubConnection>();
 
     useEffect(() => {
+        const cnct = async () => {
+            setConnection(await configureConnection());
+        }
+        cnct();
+    }, [])
+    
+    const configureConnection = async () => {
+        const token = localStorage.getItem("access_token");
+        const connection = new HubConnectionBuilder()
+            .withUrl(process.env.REACT_APP_ORIGIN_WEB_API + '/gaming', {
+                accessTokenFactory: () => token ?? ''
+            })
+            .build();
+
+        await connection.start();
+        setReady(true);
+        return connection;
+    }
+    
+    useEffect(() => {
+        if (!isReady) {
+            return;
+        }
+        
         let jwtToken = localStorage.getItem("access_token") as string;
         console.log(userName + " " + localStorage.getItem("initiatorUserName"));
 
         if (jwtToken) {
-
+            console.log("Connection from GamePage: " + connection);
             connection!.on('IsConnected', (userName, sign) => {
                 swal.fire(
                     userName,
@@ -65,7 +87,7 @@ export const GamePage = ({connection}: GamePageProps) => {
              navigate(`/signup`, {replace: true});
         }
         
-    }, [])
+    }, [isReady])
 
     
     const handleJoin = () => {

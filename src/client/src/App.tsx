@@ -11,14 +11,7 @@ import {HubConnection, HubConnectionBuilder} from "@aspnet/signalr";
 
 const App = () => {
     
-    const [connection, setConnection] = useState<HubConnection>();
-    
-    useEffect(() => {
-        const cnct = async () => {
-            setConnection(await configureConnection());
-        }
-        cnct();
-    }, [])
+
 
     const configureConnection = async () => {
         const token = localStorage.getItem("access_token");
@@ -34,11 +27,11 @@ const App = () => {
     }
     
     const router = createBrowserRouter([
-        { path: "/", element: <RatingCreationPage connection={connection}/>},
+        { path: "/", element: <RatingCreationPage />},
         { path: '/signup', element: <RegistrationPage /> },
         { path: '/authorization', element: <AuthorizationPage /> },
         { path: "/selection", element: <SelectionPage/>},
-        { path: "/game", element: <GamePage connection={connection}/>}
+        { path: "/game", element: <GamePage />}
     ])
     
     return (
