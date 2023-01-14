@@ -13,6 +13,7 @@ public static class DbConfiguration
             .GetSettings<DbSettings>()
             .ToString(Database.Postgres);
         
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connection));
         return services;
     }
