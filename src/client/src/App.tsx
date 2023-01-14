@@ -6,7 +6,7 @@ import {AuthorizationPage} from "./pages/AuthorizationPage";
 import {SelectionPage} from "./pages/SelectionPage";
 import {GamePage} from "./pages/GamePage";
 import {RatingCreationPage} from "./pages/RatingCreationPage";
-import {HttpTransportType, HubConnection, HubConnectionBuilder} from "@aspnet/signalr";
+import {HubConnection, HubConnectionBuilder} from "@aspnet/signalr";
 
 
 const App = () => {
@@ -27,7 +27,8 @@ const App = () => {
                 accessTokenFactory: () => token ?? ''
             })
             .build();
-   
+        connection.start().then()
+        
         return connection;
     }
     
@@ -37,7 +38,6 @@ const App = () => {
         { path: '/authorization', element: <AuthorizationPage /> },
         { path: "/selection", element: <SelectionPage/>},
         { path: "/game", element: <GamePage connection={connection}/>}
-
     ])
     
     return (

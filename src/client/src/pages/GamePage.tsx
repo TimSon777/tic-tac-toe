@@ -26,16 +26,33 @@ export const GamePage = ({connection}: GamePageProps) => {
 
     useEffect(() => {
         let jwtToken = localStorage.getItem("access_token") as string;
-        console.log("jwtToken: " + jwtToken);
         if (jwtToken) {
+
+            connection!.on('IsConnected', (userName, sign) => {
+                alert(userName + " " + sign);
+
+                axios.get<Game>(process.env.REACT_APP_ORIGIN_WEB_API + '/games',
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                        }
+                    })
+                    .then(response => {
+                        console.log(response.data);
+                        setGame(response.data);
+                    })
+            });
+            
             let decode = jwt_decode(jwtToken) as Claims;
             let username = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
-            setUserName(username);
 
-            axios.post<Response>(process.env.REACT_APP_ORIGIN_WEB_API + '/games', {})
-                .then(response => {
-                    setGame(response.data);
-                })
+            const initiatorUserName = localStorage.getItem("initiatorUserName")
+            
+            if (initiatorUserName != null){
+                return;
+            }
+            
+            setUserName(username);
             
         } else {
              navigate(`/signup`, {replace: true});
@@ -47,10 +64,28 @@ export const GamePage = ({connection}: GamePageProps) => {
     let rating: number = 0;
     
     const handleJoin = () => {
-        if (0) {
+        let jwtToken = localStorage.getItem("access_token") as string;
+        if (jwtToken) {
+            let decode = jwt_decode(jwtToken) as Claims;
+            let username = decode["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+            setUserName(username);
+
+            const initiatorUserName = localStorage.getItem("initiatorUserName");
             
-        } else {
-            return;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${jwtToken}`;
+            
+            axios.post<boolean>(process.env.REACT_APP_ORIGIN_WEB_API + '/game/join',
+                {
+                    initiatorUserName: initiatorUserName
+                })
+                .then(response => {
+                    if (!response.data) {
+                        alert("Can not join to game");
+                        return;
+                    }
+
+                    connection!.invoke("StartGame").then();
+                });
         }
     }
 
@@ -58,10 +93,14 @@ export const GamePage = ({connection}: GamePageProps) => {
         <>
             <p>Rating: {rating.toString()}</p>
             <div className={"tic-tac-toe-container"}>
-                <Board sign={''} squaresInRow={3}></Board>
+                {game == undefined 
+                    ? <></>
+                    : <Board sign={game!.sign} squaresInRow={game!.board.length} connection={connection}/>
+                }
             </div>
             <div className={"restart-button"}>
-                <Button onClick={handleJoin} color={"primary"} variant="outlined" fullWidth={true}>
+                <Button disabled={userName === localStorage.getItem("initiatorUserName")}
+                        onClick={handleJoin} color={"primary"} variant="outlined" fullWidth={true}>
                     JOIN
                 </Button>
             </div>
@@ -70,7 +109,9 @@ export const GamePage = ({connection}: GamePageProps) => {
                 To selection
             </Button>
             
-            <Alert style={{display: "none"}} severity="success">User {userName} win!</Alert>
+            {/*<Alert */}
+            {/*    // style={{display: "none"}} */}
+            {/*    severity="success">User {userName} win!</Alert>*/}
         </>
     );
 };

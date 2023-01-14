@@ -19,6 +19,7 @@ export const GameCard = ({game, userName}: GameCardProps) => {
     const navigate = useNavigate();
     
     const handleClick = () => {
+        localStorage.setItem("initiatorUserName", game.userName);
         navigate(`/game`, {replace: true});
     }
     

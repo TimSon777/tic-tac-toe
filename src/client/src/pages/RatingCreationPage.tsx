@@ -67,23 +67,13 @@ export const RatingCreationPage = ({connection}: RatingCreationPageProps) => {
             axios.post<Response>(process.env.REACT_APP_ORIGIN_WEB_API + '/game', {})
                 .then(response => {
                     if (response.data.isCreated) {
-                      /*  try {
-                            connection!.start().then(() => {
-                                connection!.on('IsConnected', (userName) => {
-                                    alert(userName);
-                                });
-                            });
-                        } catch (err) {
-                            console.log(err);
-                        }*/
-                                navigate('/game', {replace: true});
+                        navigate('/game', {replace: true});
                             
                     } else {
-                        alert("false");
+                        alert("Game is already created");
                     }
                 });
 
-            //navigate(`/game/${}`, {replace: true});
         } catch (error) {
             console.error(error);
         }

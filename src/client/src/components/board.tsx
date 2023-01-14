@@ -5,10 +5,12 @@ import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
 import {HubConnection} from "@aspnet/signalr";
 import {Square} from "./square";
 import {Game} from "./game-card";
+import {useNavigate} from "react-router-dom";
 
 interface BoardProps {
     squaresInRow: number;
     sign: string;
+    connection: HubConnection | undefined;
 }
 
 // Создатель комнаты должен просто сидеть и ждать когда кто-то подключится. 
@@ -21,40 +23,73 @@ interface BoardProps {
 // В случае ничью очки не присуждаются.
 // После окончания игра должна создаться автоматически через несколько секунд (кол-во секунд на ваш выбор).
 
-export const Board = ({squaresInRow, sign}: BoardProps) => {
+export const Board = ({squaresInRow, sign, connection}: BoardProps) => {
 
     const squaresCount = squaresInRow * squaresInRow;
     const [squares, setSquares] = useState(Array(squaresCount).fill(null));
-    const [isDisabled, setIsDisabled] = useState(false);
+    const [isDisabled, setIsDisabled] = useState(sign !== 'X');
 
-    useEffect(() => {
-        setIsDisabled(sign !== 'X');
-        
-        
-    })
+    const navigate = useNavigate();
     
-    const handleClick = (i: number) => {
-        if (squares[i] === '') {
-            squares[i] = sign;
+    useEffect(() => {
+        connection!.on('MateMoved', (y, x, errors : string) => {
+            const index = squaresInRow * y + x;
+            squares[index] = sign === "X" ? "O" : "X";
             setSquares(squares);
-            setIsDisabled(true);
+            setIsDisabled(false);
+        });
+    }, [])
+    
+    useEffect(() => {
+        connection!.on('GameOver', (gameStatus : string) => {
+            if (gameStatus === "CrossWin"){
+                if (sign === "X"){
+                    alert("Вы победили, вам +3 очка");
+                }
+                else{
+                    alert("Вы проиграли, вам -1 очко");
+                }
+                navigate('/selection', {replace: true});
+            }
+
+            if (gameStatus === "NoughtWin"){
+                if (sign === "O"){
+                    alert("Вы победили, вам +3 очка");
+                }
+                else{
+                    alert("Вы проиграли, вам -1 очко");
+                }
+                navigate('/selection', {replace: true});
+            }
+
+            if (gameStatus === "Draw"){
+                alert("Ничья");
+                navigate('/selection', {replace: true});
+            }
+        });
+    }, [])
+    
+    const handleClick = (x: number, y: number, index: number) => {
+        if (squares[index] == null) {
+            squares[index] = sign;
+            connection!.invoke("Move", x, y).then(() => {
+                setSquares(squares);
+                setIsDisabled(true);
+            });
         }
     }
-//подписка на сигналр, что оппонент сходил, и нужно поменять isDisabled
-// нужно инвокать в сигналр метод хода и нужно поменять isDisabled
-// откуда получать isDisabled: props или запрос к бэку?
     let squaresRow = [];
     const rows = [];
 
     for (let j = 0; j < squaresInRow; j++) {
         squaresRow = [];
-
         for (let i = 0; i < squaresInRow; i++) {
-            let index = squaresInRow * j + i;
+            const index = squaresInRow * j + i;
             squaresRow.push(
                 <Button
+                    key={index}
                     className={"square-button"}
-                    onClick={() => handleClick(index)}
+                    onClick={() => handleClick(j, i, index)}
                     variant="outlined"
                     sx={{
                         width: 64,
@@ -72,7 +107,7 @@ export const Board = ({squaresInRow, sign}: BoardProps) => {
                 );
         }
 
-        rows.push(<div className={"squares-row"}>
+        rows.push(<div key={(Math.random())} className={"squares-row"}>
             {squaresRow}
         </div>)
     }

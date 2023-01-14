@@ -100,7 +100,7 @@ export const SelectionPage = () => {
                 >
                     <div className={"selection-container"}>
                         {items.map((item) =>
-                            <GameCard game={item} userName={userName}></GameCard>
+                            <GameCard game={item} userName={userName}/>
                         )}
 
                     </div>
