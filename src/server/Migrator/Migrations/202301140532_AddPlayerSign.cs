@@ -9,6 +9,7 @@ public sealed class AddPlayerSign : ForwardOnlyMigration
             .Column("PlayerSign")
             .OnTable("Players")
             .AsString(30)
-            .NotNullable();
+            .NotNullable()
+            .SetExistingRowsTo("Nought");
     }
 }
