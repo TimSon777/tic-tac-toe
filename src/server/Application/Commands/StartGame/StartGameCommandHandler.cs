@@ -40,8 +40,8 @@ public sealed class StartGameCommandHandler : CommandHandlerBase<StartGameComman
         {
             IsStart = true,
             InitiatorUserName = player.User.UserName,
-            InitiatorPlayerSign = game.Initiator.PlayerSign.ToChar().ToString(),
-            PlayerSign = game.Mate!.PlayerSign.ToChar().ToString()
+            InitiatorPlayerSign = game.Initiator.PlayerSign.ToStr().ToString(),
+            PlayerSign = game.Mate!.PlayerSign.ToStr().ToString()
         };
     }
 }

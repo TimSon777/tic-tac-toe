@@ -8,10 +8,10 @@ public enum PlayerSign
 
 public static class PlayerSignExtensions
 {
-    public static char ToChar(this PlayerSign playerSign)
+    public static string ToStr(this PlayerSign playerSign)
     {
         return playerSign == PlayerSign.Cross
-            ? 'X'
-            : 'O';
+            ? "X"
+            : "O";
     }
 }
